@@ -18,6 +18,13 @@ packages = [{include="mojo", from="source/packages"}]
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
 mojo-errors = "^0.0.1"
+pymongo = {extras = ["srv"], version = "^4.0.0", optional = true}
+couchdb = {version = "^1.2", optional = true}
+cryptography = "^41.0.3"
+
+[tool.poetry.extras]
+mongodb = ["pymongo"]
+couchdb = ["couchdb"]
 
 [tool.poetry.group.dev.dependencies]
 myst-parser = "^0.18.1"
