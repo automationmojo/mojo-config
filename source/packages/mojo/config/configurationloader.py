@@ -72,7 +72,7 @@ class ConfigurationLoader:
         if "encrypted_content" in configinfo:
             decryption_key = base64.b64decode(base64_key)
 
-            encrypted_content = configinfo["encrypted_content"]
+            encrypted_content = base64.b64decode(configinfo["encrypted_content"])
             decryptor = Fernet(decryption_key)
             plain_content = decryptor.decrypt(encrypted_content)
 

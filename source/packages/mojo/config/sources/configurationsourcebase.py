@@ -23,5 +23,4 @@ class ConfigurationSourceBase(ABC):
 
     @abstractmethod
     def try_load_configuration(self, config_name: str) -> Union[Tuple[ConfigurationFormat, str], Tuple[None, None]]:
-        
         return
