@@ -1,5 +1,5 @@
 
-from typing import Tuple, Union
+from typing import Dict, Optional, Tuple, Union
 
 import re
 
@@ -8,6 +8,8 @@ from mojo.config.configurationformat import ConfigurationFormat
 from mojo.config.sources.configurationsourcebase import (
     ConfigurationSourceBase
 )
+
+uri = "mongodb+srv://myronwalker:<password>@automation-mojo-db.q0jpg0g.mongodb.net/?retryWrites=true&w=majority"
 
 class MongoDBSource(ConfigurationSourceBase):
 
@@ -60,9 +62,27 @@ class MongoDBSource(ConfigurationSourceBase):
 
         return rtnobj
 
-    def try_load_configuration(self, config_name: str) -> Union[Tuple[ConfigurationFormat, str], Tuple[None, None]]:
-        
-        config_format = None
-        config_content = None
+    def try_load_configuration(self, config_name: str, credentials: Dict[str, Tuple[str, str]]) -> Union[Tuple[ConfigurationFormat, dict], Tuple[None, None]]:
 
-        return config_format, config_content
+        config_info = None
+        config_format = None
+
+        try:
+            dburi = f"https://{self._host}:{self._port}/{self._database}"
+
+            import couchdb
+
+            db = couchdb.Database(dburi)
+
+            if self._host in credentials:
+                username, password = credentials[self._host]
+                db.resource.credentials = (username, password)
+
+            config_info = db.get(config_name)
+            config_format = ConfigurationFormat.JSON
+
+        except:
+            config_info = None
+
+
+        return config_format, config_info

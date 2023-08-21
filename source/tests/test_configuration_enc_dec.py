@@ -1,8 +1,8 @@
 
-import os
-import tempfile
+
+import json
 import unittest
-import base64
+
 
 from mojo.config.cryptography import (
     create_encrypted_configuration,
@@ -40,6 +40,8 @@ class TestConfigurationEncryption(unittest.TestCase):
         econf_info = create_encrypted_configuration(key, CREDENTIAL_CONTENT)
 
         cipher_content = econf_info["encrypted_content"]
+
+        econf_doc_content = json.dumps(econf_info, indent=4)
 
         plain_content = decrypt_content(key, cipher_content)
 

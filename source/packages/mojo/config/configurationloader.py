@@ -1,5 +1,5 @@
 
-from typing import List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import os
 import json
@@ -13,9 +13,10 @@ from mojo.config.sources.couchdbsource import CouchDBSource
 from mojo.config.sources.directorysource import DirectorySource
 from mojo.config.sources.mongodbsource import MongoDBSource
 
-from mojo.errors.exceptions import ConfigurationError
+from mojo.errors.exceptions import ConfigurationError, SemanticError
 
 from mojo.config.configurationformat import ConfigurationFormat
+from mojo.config.cryptography import generate_fernet_key
 
 class ConfigurationLoader:
     """
@@ -23,8 +24,9 @@ class ConfigurationLoader:
         source classes.
     """
 
-    def __init__(self, source_uris: List[str]):
+    def __init__(self, source_uris: List[str], credentials: Optional[Dict[str, Tuple[str, str]]] = None):
         self._source_uris = [uri.strip() for uri in source_uris]
+        self._credentials = credentials
         self._sources: List[ConfigurationSourceBase] = []
         self._initialize()
         return
@@ -37,17 +39,29 @@ class ConfigurationLoader:
     def sources(self) -> List[ConfigurationSourceBase]:
         return self._sources
 
-    def load_configuration(self, config_name: str, base64_key: Optional[str] = None) -> dict:
+    def load_configuration(self, config_name: str, key: Optional[str] = None, keyphrase: Optional[str] = None) -> dict:
+        """
+            :param config_name: The name of the configuration to load.
+            :param key: An optional key to use for encrypted configurations.
+            :param keyphrase: An optional phrase to use for generating the decryption key.
+        """
+        
+        if key is not None and keyphrase is not None:
+            errmsg = "The 'load_configuration' method should be called with either 'key' or 'keyphrase' but not both."
+            raise SemanticError(errmsg)
 
-        config_content = None
+        if keyphrase is not None:
+            key = generate_fernet_key(keyphrase)
+
+        config_info = None
         config_format = None
 
         for src in self._sources:
-            config_content, config_format = src.try_load_configuration(config_name)
-            if config_content is not None:
+            config_format, config_info = src.try_load_configuration(config_name, self._credentials)
+            if config_info is not None:
                 break
 
-        if config_content is not None:
+        if config_info is None:
             errmsg_list = [
                 f"Unable to locate configuration name='{config_name}'",
                 "CHECKED SOURCES:"
@@ -59,32 +73,26 @@ class ConfigurationLoader:
             errmsg = os.linesep.join(errmsg_list)
             raise ConfigurationError(errmsg)
 
-        configinfo = None
+        if "encrypted_content" in config_info:
 
-        if config_format == ConfigurationFormat.YAML:
-            configinfo = yaml.safe_load(config_content)
-        elif config_format == ConfigurationFormat.JSON:
-            configinfo = json.loads(config_content)
-        else:
-            errmsg = "UnExpected error parsing configuration content.  Un-supported format."
-            raise ConfigurationError(errmsg)
+            if "format" in config_info:
+                config_format = config_info["format"]
 
-        if "encrypted_content" in configinfo:
-            decryption_key = base64.b64decode(base64_key)
-
-            encrypted_content = base64.b64decode(configinfo["encrypted_content"])
-            decryptor = Fernet(decryption_key)
-            plain_content = decryptor.decrypt(encrypted_content)
+            decryptor = Fernet(key)
+            
+            encrypted_content = base64.b64decode(config_info["encrypted_content"])
+            
+            plain_content = decryptor.decrypt(encrypted_content).decode('utf-8')
 
             if config_format == ConfigurationFormat.YAML:
-                configinfo = yaml.safe_load(plain_content)
+                config_info = yaml.safe_load(plain_content)
             elif config_format == ConfigurationFormat.JSON:
-                configinfo = json.loads(plain_content)
+                config_info = json.loads(plain_content)
             else:
                 errmsg = "UnExpected error parsing decrypted configuration content.  Un-supported format."
                 raise ConfigurationError(errmsg)
 
-        return configinfo
+        return config_info
 
     def _initialize(self):
 

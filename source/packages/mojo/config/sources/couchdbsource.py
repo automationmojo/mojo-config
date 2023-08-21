@@ -1,7 +1,8 @@
 
-from typing import Tuple, Union
+from typing import Dict, Optional, Tuple, Union
 
 import re
+import traceback
 
 from mojo.errors.exceptions import ConfigurationError
 from mojo.config.configurationformat import ConfigurationFormat
@@ -11,14 +12,15 @@ from mojo.config.sources.configurationsourcebase import (
 
 class CouchDBSource(ConfigurationSourceBase):
 
-    schema = "couchdb"
-    parse_exp = re.compile(r"couchdb://(?P<host>[a-zA-Z\.0-9\-]+):(?P<port>[0-9]+)/(?P<database>[a-zA-Z\.0-9\-]+)")
+    scheme = "couchdb"
+    parse_exp = re.compile(r"couchdb://(?P<scheme>[htps]+)\+(?P<host>[a-zA-Z\.0-9\-]+)(?P<port>[:0-9]+)*/(?P<database>[a-zA-Z\.0-9\-]+)")
 
-    def __init__(self, uri: str, host: str, port: int, database: str):
+    def __init__(self, uri: str, cscheme: str, host: str, database: str, port: Optional[int]):
         super().__init__(uri)
+        self._cscheme = cscheme
         self._host = host
-        self._port = port
         self._database = database
+        self._port = port
         return
 
     @property
@@ -47,16 +49,47 @@ class CouchDBSource(ConfigurationSourceBase):
                 raise ConfigurationError(errmsg)
 
             matchinfo = mobj.groupdict()
+
+            cscheme = matchinfo["scheme"]
             host = matchinfo["host"]
-            port = matchinfo["port"]
+
+            port = None
+            if "port" in matchinfo and matchinfo["port"] is not None:
+                port = int(matchinfo["port"].lstrip(":"))
+            
             database = matchinfo["database"]
-            rtnobj = CouchDBSource(uri, host, port, database)
+
+            rtnobj = CouchDBSource(uri, cscheme, host, database, port)
 
         return rtnobj
     
-    def try_load_configuration(self, config_name: str) -> Union[Tuple[ConfigurationFormat, str], Tuple[None, None]]:
+    def try_load_configuration(self, config_name: str, credentials: Dict[str, Tuple[str, str]]) -> Union[Tuple[ConfigurationFormat, str], Tuple[None, None]]:
         
+        config_info = None
         config_format = None
-        config_content = None
 
-        return config_format, config_content
+        try:
+            dburi = None
+            
+            if self._port is not None:
+                dburi = f"{self._cscheme}://{self._host}:{self._port}/{self._database}"
+            else:
+                dburi = f"{self._cscheme}://{self._host}/{self._database}"
+
+            import couchdb
+
+            db = couchdb.Database(dburi)
+
+            if credentials is not None and self._host in credentials:
+                username, password = credentials[self._host]
+                db.resource.credentials = (username, password)
+
+            config_info = db.get(config_name)
+            config_format = ConfigurationFormat.JSON
+
+        except:
+            errmsg = traceback.format_exc()
+            print(errmsg)
+            config_info = None
+
+        return config_format, config_info

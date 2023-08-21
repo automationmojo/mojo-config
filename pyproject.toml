@@ -23,8 +23,8 @@ couchdb = {version = "^1.2", optional = true}
 cryptography = "^41.0.3"
 
 [tool.poetry.extras]
-mongodb = ["pymongo"]
-couchdb = ["couchdb"]
+mongodb = ["all", "pymongo"]
+couchdb = ["all", "couchdb"]
 
 [tool.poetry.group.dev.dependencies]
 myst-parser = "^0.18.1"

@@ -15,9 +15,16 @@ def decode_key(encoded_key: str) -> bytes:
     return rtnval
 
 
-def generate_fernet_key(passphrase: str) -> str:
+def generate_fernet_key(keyphrase: str) -> str:
+    """
+        Generates a 'Fernet' encryption and decryption key from the 'keyphrase' provided.
+
+        :param keyphrase: The keyphrase to use to generate the encryption and decryption key.
+
+        :returns: The generated encryption and decryption key
+    """
     
-    rgen = random.Random(passphrase)
+    rgen = random.Random(keyphrase)
 
     key_bytes = rgen.randbytes(32)
 
