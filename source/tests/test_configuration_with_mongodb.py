@@ -7,12 +7,13 @@ import unittest
 
 from mojo.config.configurationloader import ConfigurationLoader
 
-TEST_COUCHDB_HOSTNAME = "couchdb.automationmojo.com"
-TEST_COUCHDB_DATABASE = "test-mojo-config"
+TEST_MONGODB_HOSTNAME = "automation-mojo-db.q0jpg0g.mongodb.net"
+TEST_MONGODB_DATABASE = "test-configuration"
+TEST_MONGODB_COLLECTION = "credentials"
 
-URI_ENCRYPTED_CONFIG = f"couchdb://https+{TEST_COUCHDB_HOSTNAME}/{TEST_COUCHDB_DATABASE}"
+URI_ENCRYPTED_CONFIG = f"mongodb://{TEST_MONGODB_HOSTNAME}/{TEST_MONGODB_DATABASE}/{TEST_MONGODB_COLLECTION}"
 
-TEST_COUCHDB_DOCUMENT = "mojo-config-test-config-aaaa"
+TEST_MONGODB_DOCUMENT = "mojo-config-test-config-aaaa"
 
 CREDENTIAL_CONTENT = {
     "credentials": [
@@ -42,19 +43,19 @@ CREDENTIAL_CONTENT = {
 }
 
 
-class TestCouchDBConfigEncryption(unittest.TestCase):
+class TestMongoDBConfigEncryption(unittest.TestCase):
 
     
-    def test_couchdb_config(self):
+    def test_mongodb_config(self):
 
         if "AUTOMATION_MOJO_COUCHDB_PWD" not in os.environ:
             return
 
-        couchdbuser = "datauser"
-        couchdbpwd = os.environ["AUTOMATION_MOJO_COUCHDB_PWD"]
+        mongodbuser = "datauser"
+        mongodbpwd = os.environ["AUTOMATION_MOJO_MONGODB_PWD"]
 
         credentials = {
-            TEST_COUCHDB_HOSTNAME: (couchdbuser, couchdbpwd)
+            TEST_MONGODB_HOSTNAME: (mongodbuser, mongodbpwd)
         }
 
         config_uris =[
@@ -63,7 +64,7 @@ class TestCouchDBConfigEncryption(unittest.TestCase):
 
         loader = ConfigurationLoader(config_uris, credentials=credentials)
 
-        configinfo = loader.load_configuration(TEST_COUCHDB_DOCUMENT, keyphrase="BlahBlah!!")
+        configinfo = loader.load_configuration(TEST_MONGODB_DOCUMENT, keyphrase="BlahBlah!!")
 
         return
 

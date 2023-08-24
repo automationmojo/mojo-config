@@ -2,6 +2,7 @@
 from typing import Dict, Optional, Tuple, Union
 
 import re
+from urllib.parse import quote_plus
 
 from mojo.errors.exceptions import ConfigurationError
 from mojo.config.configurationformat import ConfigurationFormat
@@ -9,24 +10,21 @@ from mojo.config.sources.configurationsourcebase import (
     ConfigurationSourceBase
 )
 
-uri = "mongodb+srv://myronwalker:<password>@automation-mojo-db.q0jpg0g.mongodb.net/?retryWrites=true&w=majority"
-
 class MongoDBSource(ConfigurationSourceBase):
 
     schema = "mongodb"
-    parse_exp = re.compile(r"couchdb://(?P<host>[a-zA-Z\.0-9\-]+)/(?P<database>[a-zA-Z\.0-9\-]+)/(?P<catagory>[a-zA-Z\.0-9\-]+)")
+    parse_exp = re.compile(r"mongodb://(?P<host>[a-zA-Z\.0-9\-]+)/(?P<database>[a-zA-Z\.0-9\-]+)/(?P<collection>[a-zA-Z\.0-9\-]+)")
 
-    def __init__(self, uri: str, host: str, port: int, database: str, category: str):
+    def __init__(self, uri: str, host: str, database: str, collection: str):
         super().__init__(uri)
         self._host = host
-        self._port = port
         self._database = database
-        self._category = category
+        self._collection = collection
         return
     
     @property
-    def category(self) -> str:
-        return self._category
+    def collection(self) -> str:
+        return self._collection
 
     @property
     def database(self) -> str:
@@ -55,10 +53,9 @@ class MongoDBSource(ConfigurationSourceBase):
 
             matchinfo = mobj.groupdict()
             host = matchinfo["host"]
-            port = matchinfo["port"]
             database = matchinfo["database"]
-            category = matchinfo["category"]
-            rtnobj = MongoDBSource(uri, host, port, database, category)
+            collection = matchinfo["collection"]
+            rtnobj = MongoDBSource(uri, host, database, collection)
 
         return rtnobj
 
@@ -68,17 +65,18 @@ class MongoDBSource(ConfigurationSourceBase):
         config_format = None
 
         try:
-            dburi = f"https://{self._host}:{self._port}/{self._database}"
+            username, password = credentials[self._host]
+            dburi = f"mongodb+srv://{username}:{quote_plus(password)}@{self._host}/?retryWrites=true&w=majority"
 
-            import couchdb
+            import pymongo
 
-            db = couchdb.Database(dburi)
+            client = pymongo.MongoClient(dburi)
 
-            if self._host in credentials:
-                username, password = credentials[self._host]
-                db.resource.credentials = (username, password)
+            db = client[self._database]
 
-            config_info = db.get(config_name)
+            collection = db[self._collection]
+
+            config_info = collection.find_one({"_id": config_name})
             config_format = ConfigurationFormat.JSON
 
         except:

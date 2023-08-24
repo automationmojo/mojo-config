@@ -7,7 +7,7 @@ from mojo.config.configurationformat import ConfigurationFormat
 
 class ConfigurationSourceBase(ABC):
 
-    schema: str = ""
+    scheme: str = "not-set"
 
     def __init__(self, uri: str):
         self._uri = uri

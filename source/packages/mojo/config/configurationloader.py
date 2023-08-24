@@ -97,7 +97,7 @@ class ConfigurationLoader:
     def _initialize(self):
 
         for uri in self._source_uris:
-            if uri.startswith(CouchDBSource.schema):
+            if uri.startswith(CouchDBSource.scheme):
                 src = CouchDBSource.parse(uri)
 
                 if src is None:
@@ -105,7 +105,7 @@ class ConfigurationLoader:
                     raise ConfigurationError(errmsg)
 
                 self._sources.append(src)
-            elif uri.startswith(DirectorySource.schema):
+            elif uri.startswith(DirectorySource.scheme):
                 src = DirectorySource.parse(uri)
                 
                 if src is None:
