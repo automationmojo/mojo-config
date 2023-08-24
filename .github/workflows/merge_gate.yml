@@ -42,7 +42,7 @@ jobs:
       - name: Setup the Virtual Environment
         run: |
           ./development/setup-environment
-          poetry install --extras all
+          poetry install --all-extras
       
       - name: Run Stand-Alone Tests
         # Start-up tests have to be run individually
@@ -51,6 +51,7 @@ jobs:
           pushd ./source
           python3 -m unittest tests/test_configuration_enc_dec.py
           python3 -m unittest tests/test_configuration_with_couchdb.py
+          python3 -m unittest tests/test_configuration_with_mongodb.py
           popd
           deactivate
 
