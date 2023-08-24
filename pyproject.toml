@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mojo-config"
 description = "Automation Mojo Configuration Package"
-version = "0.0.2"
+version = "0.0.3"
 authors = []
 readme = "README.rst"
 license = "LICENSE.txt"
@@ -23,8 +23,8 @@ couchdb = {version = "^1.2", optional = true}
 cryptography = "^41.0.3"
 
 [tool.poetry.extras]
-mongodb = ["all", "pymongo"]
-couchdb = ["all", "couchdb"]
+mongodb = ["pymongo"]
+couchdb = ["couchdb"]
 
 [tool.poetry.group.dev.dependencies]
 myst-parser = "^0.18.1"
