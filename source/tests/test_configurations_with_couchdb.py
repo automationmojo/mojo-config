@@ -51,7 +51,7 @@ class TestCouchDBConfigEncryption(unittest.TestCase):
             return
 
         couchdbuser = "datauser"
-        couchdbpwd = os.environ["AUTOMATION_MOJO_COUCHDB_PWD"]
+        couchdbpwd = os.environ["AUTOMATION_MOJO_COUCHDB_PWD"].strip()
 
         credentials = {
             TEST_COUCHDB_HOSTNAME: (couchdbuser, couchdbpwd)

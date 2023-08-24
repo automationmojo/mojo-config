@@ -52,7 +52,7 @@ class TestMongoDBConfigEncryption(unittest.TestCase):
             return
 
         mongodbuser = "datauser"
-        mongodbpwd = os.environ["AUTOMATION_MOJO_MONGODB_PWD"]
+        mongodbpwd = os.environ["AUTOMATION_MOJO_MONGODB_PWD"].strip()
 
         credentials = {
             TEST_MONGODB_HOSTNAME: (mongodbuser, mongodbpwd)
