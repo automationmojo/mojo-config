@@ -12,7 +12,7 @@ from mojo.config.sources.configurationsourcebase import (
 
 class MongoDBSource(ConfigurationSourceBase):
 
-    schema = "mongodb"
+    scheme = "mongodb"
     parse_exp = re.compile(r"mongodb://(?P<host>[a-zA-Z\.0-9\-]+)/(?P<database>[a-zA-Z\.0-9\-]+)/(?P<collection>[a-zA-Z\.0-9\-]+)")
 
     def __init__(self, uri: str, host: str, database: str, collection: str):

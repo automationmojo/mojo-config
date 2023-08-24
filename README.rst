@@ -47,5 +47,5 @@ Code Organization
 References
 ==========
 
-- `User Guide <userguide/userguide.rst>
+- `User Guide <userguide/userguide.rst>`
 - `Coding Standards <userguide/10-00-coding-standards.rst>`

@@ -12,6 +12,7 @@ from mojo.config.sources.configurationsourcebase import ConfigurationSourceBase
 from mojo.config.sources.couchdbsource import CouchDBSource
 from mojo.config.sources.directorysource import DirectorySource
 from mojo.config.sources.mongodbsource import MongoDBSource
+from mojo.config.sources.httpsource import HttpSource
 
 from mojo.errors.exceptions import ConfigurationError, SemanticError
 
@@ -114,11 +115,20 @@ class ConfigurationLoader:
 
                 self._sources.append(src)
 
-            elif uri.startswith(MongoDBSource.schema):
+            elif uri.startswith(MongoDBSource.scheme):
                 src = MongoDBSource.parse(uri)
                 
                 if src is None:
                     errmsg = f"MongoDBSource encountered an error parsing configuration source uri='{uri}'"
+                    raise ConfigurationError(errmsg)
+                
+                self._sources.append(src)
+
+            elif uri.startswith(HttpSource.scheme) or uri.startswith("https"):
+                src = HttpSource.parse(uri)
+                
+                if src is None:
+                    errmsg = f"HttpSource encountered an error parsing configuration source uri='{uri}'"
                     raise ConfigurationError(errmsg)
                 
                 self._sources.append(src)
