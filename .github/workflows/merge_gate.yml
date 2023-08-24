@@ -50,8 +50,8 @@ jobs:
           source ./.venv/bin/activate
           pushd ./source
           python3 -m unittest tests/test_configuration_enc_dec.py
-          python3 -m unittest tests/test_configuration_with_couchdb.py
-          python3 -m unittest tests/test_configuration_with_mongodb.py
+          python3 -m unittest tests/test_configurations_with_couchdb.py
+          python3 -m unittest tests/test_configurations_with_mongodb.py
           popd
           deactivate
 
