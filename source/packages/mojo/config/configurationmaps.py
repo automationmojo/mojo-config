@@ -62,6 +62,7 @@ def resolve_configuration_maps(
 def resolve_credentials_configuration(ctx: Context, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
 
     global CREDENTIALS_TABLE
+    global CREDENTIAL_CONFIGURATION_MAP
 
     MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_CREDENTIALS = True
 
@@ -75,11 +76,15 @@ def resolve_credentials_configuration(ctx: Context, credentials: Optional[Dict[s
         config_loader = ConfigurationLoader(source_uris, credentials=credentials)
 
         CREDENTIALS_TABLE = OrderedDict()
+        CREDENTIAL_CONFIGURATION_MAP = MergeMap()
+
         for cname in config_names:
             config_uri, config_info = config_loader.load_configuration(cname)
             CREDENTIALS_TABLE[config_uri] = config_info
+            CREDENTIAL_CONFIGURATION_MAP.maps.insert(0, config_info)
 
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS = [ cfguri for cfguri in  CREDENTIALS_TABLE.keys() ]
+
 
     ctx.insert(ContextPaths.CONFIG_CREDENTIAL_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS)
 
@@ -89,6 +94,7 @@ def resolve_credentials_configuration(ctx: Context, credentials: Optional[Dict[s
 def resolve_landscape_configuration(ctx: Context, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
 
     global LANDSCAPE_TABLE
+    global LANDSCAPE_CONFIGURATION_MAP
 
     MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_LANDSCAPE = True
 
@@ -102,9 +108,12 @@ def resolve_landscape_configuration(ctx: Context, credentials: Optional[Dict[str
         config_loader = ConfigurationLoader(source_uris, credentials=credentials)
 
         LANDSCAPE_TABLE = OrderedDict()
+        LANDSCAPE_CONFIGURATION_MAP = MergeMap()
+
         for cname in config_names:
             config_uri, config_info = config_loader.load_configuration(cname)
             LANDSCAPE_TABLE[config_uri] = config_info
+            LANDSCAPE_CONFIGURATION_MAP.maps.insert(0, config_info)
 
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS = [ cfguri for cfguri in  LANDSCAPE_TABLE.keys() ]
 
@@ -116,6 +125,7 @@ def resolve_landscape_configuration(ctx: Context, credentials: Optional[Dict[str
 def resolve_runtime_configuration(ctx: Context, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
 
     global RUNTIME_TABLE
+    global RUNTIME_CONFIGURATION_MAP
 
     MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_RUNTIME = True
 
@@ -129,9 +139,12 @@ def resolve_runtime_configuration(ctx: Context, credentials: Optional[Dict[str, 
         config_loader = ConfigurationLoader(source_uris, credentials=credentials)
 
         RUNTIME_TABLE = OrderedDict()
+        RUNTIME_CONFIGURATION_MAP = MergeMap()
+
         for cname in config_names:
             config_uri, config_info = config_loader.load_configuration(cname)
             RUNTIME_TABLE[config_uri] = config_info
+            RUNTIME_CONFIGURATION_MAP.maps.insert(0, config_info)
 
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS = [ cfguri for cfguri in  RUNTIME_TABLE.keys() ]
 
@@ -143,6 +156,7 @@ def resolve_runtime_configuration(ctx: Context, credentials: Optional[Dict[str, 
 def resolve_topology_configuration(ctx: Context, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
 
     global TOPOLOGY_TABLE
+    global TOPOLOGY_CONFIGURATION_MAP
 
     MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_TOPOLOGY = True
 
@@ -156,9 +170,12 @@ def resolve_topology_configuration(ctx: Context, credentials: Optional[Dict[str,
         config_loader = ConfigurationLoader(source_uris, credentials=credentials)
 
         TOPOLOGY_TABLE = OrderedDict()
+        TOPOLOGY_CONFIGURATION_MAP = MergeMap()
+
         for cname in config_names:
             config_uri, config_info = config_loader.load_configuration(cname)
             TOPOLOGY_TABLE[config_uri] = config_info
+            TOPOLOGY_CONFIGURATION_MAP.maps.insert(0, config_info)
 
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS = [ cfguri for cfguri in  TOPOLOGY_TABLE.keys() ]
 
