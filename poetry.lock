@@ -484,14 +484,14 @@ files = [
 
 [[package]]
 name = "mojo-collections"
-version = "0.0.3"
+version = "0.0.4"
 description = "Mojo Collections Package"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "mojo_collections-0.0.3-py3-none-any.whl", hash = "sha256:009f99ef86a8ff7db2d851968c0a6ac48ef82dacb9daa3eff80438d94a22a948"},
-    {file = "mojo_collections-0.0.3.tar.gz", hash = "sha256:612201b3d312476cc6c6d9da94755c396afd004cc4822e19a0e3d4d26cd8b7b0"},
+    {file = "mojo_collections-0.0.4-py3-none-any.whl", hash = "sha256:97beffc62b9d0db15bbad26d039f2fdb20de583c9cf5d5af0b99717ff30953d8"},
+    {file = "mojo_collections-0.0.4.tar.gz", hash = "sha256:fd10d444a10cea3eb53a711fce65377b254f850d2d1a9cb60cd7a8d8e95ac3d8"},
 ]
 
 [[package]]
