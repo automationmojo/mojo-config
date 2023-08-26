@@ -22,5 +22,5 @@ class ConfigurationSourceBase(ABC):
         return
 
     @abstractmethod
-    def try_load_configuration(self, config_name: str) -> Union[Tuple[ConfigurationFormat, str], Tuple[None, None]]:
+    def try_load_configuration(self, config_name: str) -> Union[Tuple[ConfigurationFormat, dict], Tuple[None, None]]:
         return

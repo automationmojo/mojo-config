@@ -40,11 +40,13 @@ class ConfigurationLoader:
     def sources(self) -> List[ConfigurationSourceBase]:
         return self._sources
 
-    def load_configuration(self, config_name: str, key: Optional[str] = None, keyphrase: Optional[str] = None) -> dict:
+    def load_configuration(self, config_name: str, key: Optional[str] = None, keyphrase: Optional[str] = None) -> Tuple[str, dict]:
         """
             :param config_name: The name of the configuration to load.
             :param key: An optional key to use for encrypted configurations.
             :param keyphrase: An optional phrase to use for generating the decryption key.
+
+            :returns: A tuple with the uri used to locate the configuration and the configuration found
         """
         
         if key is not None and keyphrase is not None:
@@ -56,10 +58,12 @@ class ConfigurationLoader:
 
         config_info = None
         config_format = None
+        config_uri = None
 
         for src in self._sources:
             config_format, config_info = src.try_load_configuration(config_name, self._credentials)
             if config_info is not None:
+                config_uri = f"{src.uri}/{config_name}"
                 break
 
         if config_info is None:
@@ -93,7 +97,7 @@ class ConfigurationLoader:
                 errmsg = "UnExpected error parsing decrypted configuration content.  Un-supported format."
                 raise ConfigurationError(errmsg)
 
-        return config_info
+        return config_uri, config_info
 
     def _initialize(self):
 
@@ -103,14 +107,6 @@ class ConfigurationLoader:
 
                 if src is None:
                     errmsg = f"CouchDBSource encountered an error parsing configuration source uri='{uri}'"
-                    raise ConfigurationError(errmsg)
-
-                self._sources.append(src)
-            elif uri.startswith(DirectorySource.scheme):
-                src = DirectorySource.parse(uri)
-                
-                if src is None:
-                    errmsg = f"DirectorySource encountered an error parsing configuration source uri='{uri}'"
                     raise ConfigurationError(errmsg)
 
                 self._sources.append(src)
@@ -131,6 +127,15 @@ class ConfigurationLoader:
                     errmsg = f"HttpSource encountered an error parsing configuration source uri='{uri}'"
                     raise ConfigurationError(errmsg)
                 
+                self._sources.append(src)
+
+            elif uri.startswith(DirectorySource.scheme) or os.path.isdir(uri):
+                src = DirectorySource.parse(uri)
+                
+                if src is None:
+                    errmsg = f"DirectorySource encountered an error parsing configuration source uri='{uri}'"
+                    raise ConfigurationError(errmsg)
+
                 self._sources.append(src)
 
             else:

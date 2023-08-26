@@ -63,7 +63,7 @@ class TestCouchDBConfigEncryption(unittest.TestCase):
 
         loader = ConfigurationLoader(config_uris, credentials=credentials)
 
-        configinfo = loader.load_configuration(TEST_COUCHDB_DOCUMENT, keyphrase="BlahBlah!!")
+        config_uri, config_info = loader.load_configuration(TEST_COUCHDB_DOCUMENT, keyphrase="BlahBlah!!")
 
         return
 

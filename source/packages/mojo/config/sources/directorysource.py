@@ -39,10 +39,12 @@ class DirectorySource(ConfigurationSourceBase):
             matchinfo = mobj.groupdict()
             directory = matchinfo["directory"]
             rtnobj = DirectorySource(uri, directory)
+        elif os.path.isdir(uri):
+            rtnobj = DirectorySource(uri, uri)
 
         return rtnobj
 
-    def try_load_configuration(self, config_name: str, credentials: Optional[Dict[str, Tuple[str, str]]]) -> Union[Tuple[ConfigurationFormat, str], Tuple[None, None]]:
+    def try_load_configuration(self, config_name: str, credentials: Optional[Dict[str, Tuple[str, str]]]) -> Union[Tuple[ConfigurationFormat, dict], Tuple[None, None]]:
         
         config_format = None
         config_info = None

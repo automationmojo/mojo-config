@@ -64,7 +64,7 @@ class TestMongoDBConfigEncryption(unittest.TestCase):
 
         loader = ConfigurationLoader(config_uris, credentials=credentials)
 
-        configinfo = loader.load_configuration(TEST_MONGODB_DOCUMENT, keyphrase="BlahBlah!!")
+        config_uri, config_info = loader.load_configuration(TEST_MONGODB_DOCUMENT, keyphrase="BlahBlah!!")
 
         return
 

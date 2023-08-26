@@ -49,7 +49,7 @@ class HttpSource(ConfigurationSourceBase):
 
         return rtnobj
     
-    def try_load_configuration(self, config_name: str, credentials: Optional[Dict[str, Tuple[str, str]]] = None) -> Union[Tuple[ConfigurationFormat, str], Tuple[None, None]]:
+    def try_load_configuration(self, config_name: str, credentials: Optional[Dict[str, Tuple[str, str]]] = None) -> Union[Tuple[ConfigurationFormat, dict], Tuple[None, None]]:
         
         config_info = None
         config_format = None

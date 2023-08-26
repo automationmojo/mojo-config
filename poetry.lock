@@ -483,6 +483,18 @@ files = [
 ]
 
 [[package]]
+name = "mojo-collections"
+version = "0.0.1"
+description = "Mojo Collections Package"
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "mojo_collections-0.0.1-py3-none-any.whl", hash = "sha256:bf5e08f14af0ff5dfe2c1c32c02d330e2933c74e14fb01f435d0221ca26618ef"},
+    {file = "mojo_collections-0.0.1.tar.gz", hash = "sha256:dd340ad62d70d3cd646b3232989400bd0fea8338b1c85940eb74009a776f7c27"},
+]
+
+[[package]]
 name = "mojo-errors"
 version = "0.0.1"
 description = "Automation Mojo Errors Module"
@@ -977,4 +989,4 @@ mongodb = ["pymongo"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "6e839dc55461c20458a64bb941591180e7ae2353ec7018ecd382ec2ba1aca291"
+content-hash = "b7d310ea60d98a7ee363c037c928077a181a69dd78f9d9a0c37e54ccce0db08a"
