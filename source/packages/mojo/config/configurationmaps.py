@@ -9,6 +9,7 @@
 
 from typing import Dict, Optional, Tuple
 
+import os
 
 from collections import OrderedDict
 
@@ -17,7 +18,7 @@ from mojo.collections.context import Context, ContextPaths
 from mojo.collections.wellknown import ContextSingleton
 
 from mojo.config.overrides import MOJO_CONFIG_OVERRIDES
-from mojo.config.variables import MOJO_CONFIG_VARIABLES
+from mojo.config.variables import MOJO_CONFIG_VARNAMES, MOJO_CONFIG_VARIABLES
 
 from mojo.config.configurationloader import ConfigurationLoader
 
@@ -40,26 +41,35 @@ def resolve_configuration_maps(
         use_landscape: Optional[bool]=None,
         use_runtime: Optional[bool]=None,
         use_topology: Optional[bool]=None,
+        keyphrase: Optional[str]=None,
         credentials: Optional[Dict[str, Tuple[str, str]]] = None):
+
+    if MOJO_CONFIG_VARNAMES.MJR_CONFIG_PASS_PHRASE in os.environ:
+        MOJO_CONFIG_VARIABLES.MJR_CONFIG_PASS_PHRASE = os.environ[MOJO_CONFIG_VARNAMES.MJR_CONFIG_PASS_PHRASE]
+
+    if keyphrase is not None:
+        MOJO_CONFIG_VARIABLES.MJR_CONFIG_PASS_PHRASE = keyphrase
+    else:
+        keyphrase = MOJO_CONFIG_VARIABLES.MJR_CONFIG_PASS_PHRASE
 
     ctx = ContextSingleton()
 
     if use_credentials is not None:
-        resolve_credentials_configuration(ctx, credentials=credentials)
+        resolve_credentials_configuration(ctx, keyphrase=keyphrase, credentials=credentials)
 
     if use_landscape is not None:
-        resolve_landscape_configuration(ctx, credentials=credentials)
+        resolve_landscape_configuration(ctx, keyphrase=keyphrase, credentials=credentials)
 
     if use_runtime is not None:
-        resolve_runtime_configuration(ctx, credentials=credentials)
+        resolve_runtime_configuration(ctx, keyphrase=keyphrase, credentials=credentials)
 
     if use_topology is not None:
-        resolve_topology_configuration(ctx, credentials=credentials)
+        resolve_topology_configuration(ctx, keyphrase=keyphrase, credentials=credentials)
 
     return
 
 
-def resolve_credentials_configuration(ctx: Context, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
+def resolve_credentials_configuration(ctx: Context, keyphrase: Optional[str] = None, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
 
     global CREDENTIALS_TABLE
     global CREDENTIAL_CONFIGURATION_MAP
@@ -79,7 +89,7 @@ def resolve_credentials_configuration(ctx: Context, credentials: Optional[Dict[s
         CREDENTIAL_CONFIGURATION_MAP = MergeMap()
 
         for cname in config_names:
-            config_uri, config_info = config_loader.load_configuration(cname)
+            config_uri, config_info = config_loader.load_configuration(cname, keyphrase=keyphrase)
             CREDENTIALS_TABLE[config_uri] = config_info
             CREDENTIAL_CONFIGURATION_MAP.maps.insert(0, config_info)
 
@@ -91,7 +101,7 @@ def resolve_credentials_configuration(ctx: Context, credentials: Optional[Dict[s
     return
 
 
-def resolve_landscape_configuration(ctx: Context, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
+def resolve_landscape_configuration(ctx: Context, keyphrase: Optional[str] = None, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
 
     global LANDSCAPE_TABLE
     global LANDSCAPE_CONFIGURATION_MAP
@@ -111,7 +121,7 @@ def resolve_landscape_configuration(ctx: Context, credentials: Optional[Dict[str
         LANDSCAPE_CONFIGURATION_MAP = MergeMap()
 
         for cname in config_names:
-            config_uri, config_info = config_loader.load_configuration(cname)
+            config_uri, config_info = config_loader.load_configuration(cname, keyphrase=keyphrase)
             LANDSCAPE_TABLE[config_uri] = config_info
             LANDSCAPE_CONFIGURATION_MAP.maps.insert(0, config_info)
 
@@ -122,7 +132,7 @@ def resolve_landscape_configuration(ctx: Context, credentials: Optional[Dict[str
     return
 
 
-def resolve_runtime_configuration(ctx: Context, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
+def resolve_runtime_configuration(ctx: Context, keyphrase: Optional[str] = None, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
 
     global RUNTIME_TABLE
     global RUNTIME_CONFIGURATION_MAP
@@ -142,7 +152,7 @@ def resolve_runtime_configuration(ctx: Context, credentials: Optional[Dict[str, 
         RUNTIME_CONFIGURATION_MAP = MergeMap()
 
         for cname in config_names:
-            config_uri, config_info = config_loader.load_configuration(cname)
+            config_uri, config_info = config_loader.load_configuration(cname, keyphrase=keyphrase)
             RUNTIME_TABLE[config_uri] = config_info
             RUNTIME_CONFIGURATION_MAP.maps.insert(0, config_info)
 
@@ -153,7 +163,7 @@ def resolve_runtime_configuration(ctx: Context, credentials: Optional[Dict[str, 
     return
 
 
-def resolve_topology_configuration(ctx: Context, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
+def resolve_topology_configuration(ctx: Context, keyphrase: Optional[str] = None, credentials: Optional[Dict[str, Tuple[str, str]]] = None):
 
     global TOPOLOGY_TABLE
     global TOPOLOGY_CONFIGURATION_MAP
@@ -173,7 +183,7 @@ def resolve_topology_configuration(ctx: Context, credentials: Optional[Dict[str,
         TOPOLOGY_CONFIGURATION_MAP = MergeMap()
 
         for cname in config_names:
-            config_uri, config_info = config_loader.load_configuration(cname)
+            config_uri, config_info = config_loader.load_configuration(cname, keyphrase=keyphrase)
             TOPOLOGY_TABLE[config_uri] = config_info
             TOPOLOGY_CONFIGURATION_MAP.maps.insert(0, config_info)
 
