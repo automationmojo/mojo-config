@@ -9,6 +9,7 @@
 
 from typing import Dict, Optional, Tuple
 
+
 from collections import OrderedDict
 
 from mojo.collections.mergemap import MergeMap
@@ -19,6 +20,7 @@ from mojo.config.overrides import MOJO_CONFIG_OVERRIDES
 from mojo.config.variables import MOJO_CONFIG_VARIABLES
 
 from mojo.config.configurationloader import ConfigurationLoader
+
 
 CREDENTIALS_TABLE = None
 CREDENTIAL_CONFIGURATION_MAP = None
