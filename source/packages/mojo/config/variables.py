@@ -10,10 +10,8 @@
 
 import os
 
-from mojo.collections.context import ContextPaths
 from mojo.collections.wellknown import ContextSingleton
 
-from mojo.config.defaultvalues import DefaultValues
 from mojo.config.normalize import normalize_name_list, normalize_source_list
 from mojo.config.overrides import MOJO_CONFIG_OVERRIDES
 

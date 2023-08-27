@@ -484,14 +484,14 @@ files = [
 
 [[package]]
 name = "mojo-collections"
-version = "0.0.4"
+version = "0.0.5"
 description = "Mojo Collections Package"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "mojo_collections-0.0.4-py3-none-any.whl", hash = "sha256:97beffc62b9d0db15bbad26d039f2fdb20de583c9cf5d5af0b99717ff30953d8"},
-    {file = "mojo_collections-0.0.4.tar.gz", hash = "sha256:fd10d444a10cea3eb53a711fce65377b254f850d2d1a9cb60cd7a8d8e95ac3d8"},
+    {file = "mojo_collections-0.0.5-py3-none-any.whl", hash = "sha256:ca2cbc2a1b7d455645ac57df579579f57ca33f6ab3106d6ef7010c126d99ff97"},
+    {file = "mojo_collections-0.0.5.tar.gz", hash = "sha256:b3edf708b43e9f6aea5177eb62400e8a32e270851a8e1e81ff58eb55abf5425b"},
 ]
 
 [[package]]
@@ -989,4 +989,4 @@ mongodb = ["pymongo"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "b7d310ea60d98a7ee363c037c928077a181a69dd78f9d9a0c37e54ccce0db08a"
+content-hash = "b229bdd9f8487332dd0d848016a27e03dd9397bc263d96f8b8f7b2064bf4d4a6"

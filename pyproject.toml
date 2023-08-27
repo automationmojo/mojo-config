@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mojo-config"
 description = "Automation Mojo Configuration Package"
-version = "0.0.13"
+version = "0.0.14"
 authors = []
 readme = "README.rst"
 license = "LICENSE.txt"
@@ -21,7 +21,7 @@ mojo-errors = "^0.0.1"
 pymongo = {extras = ["srv"], version = "^4.0.0", optional = true}
 couchdb = {version = "^1.2", optional = true}
 cryptography = "^41.0.3"
-mojo-collections = ">=0.0.1 <0.1.0"
+mojo-collections = ">=0.0.5 <0.1.0"
 
 [tool.poetry.extras]
 mongodb = ["pymongo"]
