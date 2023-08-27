@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mojo-config"
 description = "Automation Mojo Configuration Package"
-version = "0.0.14"
+version = "0.0.15"
 authors = []
 readme = "README.rst"
 license = "LICENSE.txt"
