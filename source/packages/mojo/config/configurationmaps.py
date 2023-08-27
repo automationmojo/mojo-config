@@ -95,6 +95,9 @@ def resolve_credentials_configuration(ctx: Context, keyphrase: Optional[str] = N
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS = [ cfguri for cfguri in  CREDENTIALS_TABLE.keys() ]
 
     ctx.insert(ContextPaths.CONFIG_CREDENTIAL_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS)
+    # For now, we don't want to put the CREDENTIALS CONFIGURATION into the context, because at the moment we don't 
+    # want to pass it around in the plain.  Possibly what we can do is create a version of MergeMap that will serialize
+    # with a protective pass key or something like that.
 
     return
 
@@ -125,6 +128,7 @@ def resolve_landscape_configuration(ctx: Context, keyphrase: Optional[str] = Non
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS = [ cfguri for cfguri in  LANDSCAPE_TABLE.keys() ]
 
     ctx.insert(ContextPaths.CONFIG_LANDSCAPE_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS)
+    ctx.insert(ContextPaths.CONFIG_LANDSCAPE, CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP)
 
     return
 
@@ -155,6 +159,7 @@ def resolve_runtime_configuration(ctx: Context, keyphrase: Optional[str] = None,
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS = [ cfguri for cfguri in  RUNTIME_TABLE.keys() ]
 
     ctx.insert(ContextPaths.CONFIG_RUNTIME_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS)
+    ctx.insert(ContextPaths.CONFIG_RUNTIME, CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP)
 
     return
 
@@ -185,6 +190,7 @@ def resolve_topology_configuration(ctx: Context, keyphrase: Optional[str] = None
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS = [ cfguri for cfguri in  TOPOLOGY_TABLE.keys() ]
 
     ctx.insert(ContextPaths.CONFIG_TOPOLOGY_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS)
+    ctx.insert(ContextPaths.CONFIG_TOPOLOGY, CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP)
 
     return
 
