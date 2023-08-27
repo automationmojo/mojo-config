@@ -10,11 +10,21 @@ from typing import List
 
 import os
 
+SEPARATOR = ";"
 
-def normalize_name_list(names: str, sep: str=",") -> List[str]:
+def normalize_path_list(paths: List[str]):
+    norm_paths: List[str] = []
+
+    for nxt_path in paths:
+        nxt_full_path = os.path.abspath(os.path.expandvars(os.path.expanduser(nxt_path.strip())))
+        norm_paths.append(nxt_full_path)
+
+    return norm_paths
+
+def split_and_normalize_name_list(names_val: str, sep: str=SEPARATOR) -> List[str]:
     norm_names: List[str] = []
 
-    cand_names: List[str] = names.split(sep)
+    cand_names: List[str] = names_val.split(sep)
     for nxt_name in cand_names:
         nname = nxt_name.strip()
         norm_names.append(nname)
@@ -22,10 +32,17 @@ def normalize_name_list(names: str, sep: str=",") -> List[str]:
     return norm_names
 
 
-def normalize_source_list(sources: str, sep: str=";") -> List[str]:
+def split_and_normalize_path_list(paths_val: str, sep: str=SEPARATOR):
+
+    paths: List[str] = paths_val.split(sep)
+    norm_paths = normalize_path_list(paths)
+
+    return norm_paths
+
+def split_and_normalize_source_list(sources_val: str, sep: str=SEPARATOR) -> List[str]:
     norm_sources: List[str] = []
 
-    search_sources: List[str] = sources.split(sep)
+    search_sources: List[str] = sources_val.split(sep)
     for nxtsrc in search_sources:
         norm_sources.append(nxtsrc.strip())
 

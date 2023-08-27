@@ -7,6 +7,15 @@
 .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
+__author__ = "Myron Walker"
+__copyright__ = "Copyright 2020, Myron W Walker"
+__credits__ = []
+__version__ = "1.0.0"
+__maintainer__ = "Myron Walker"
+__email__ = "myron.walker@gmail.com"
+__status__ = "Development" # Prototype, Development or Production
+__license__ = "MIT"
+
 import os
 
 class MOJO_CONFIG_OVERRIDES:
@@ -15,10 +24,10 @@ class MOJO_CONFIG_OVERRIDES:
 
     MJR_HOME_DIRECTORY = os.path.expanduser("~/{}".format(MJR_NAME))
 
-    MJR_CONFIG_USE_CREDENTIALS = False
-    MJR_CONFIG_USE_LANDSCAPE = False
-    MJR_CONFIG_USE_RUNTIME = False
-    MJR_CONFIG_USE_TOPOLOGY = False
+    MJR_CONFIG_REQUIRE_CREDENTIALS = False
+    MJR_CONFIG_REQUIRE_LANDSCAPE = False
+    MJR_CONFIG_REQUIRE_RUNTIME = False
+    MJR_CONFIG_REQUIRE_TOPOLOGY = False
 
     DEFAULT_CONFIGURATION = {
         "version": "1.0.0",
