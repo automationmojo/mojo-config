@@ -7,9 +7,13 @@
 .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
+import os
+
 class MOJO_CONFIG_OVERRIDES:
 
     MJR_NAME = "mjr"
+
+    MJR_HOME_DIRECTORY = os.path.expanduser("~/{}".format(MJR_NAME))
 
     MJR_CONFIG_USE_CREDENTIALS = False
     MJR_CONFIG_USE_LANDSCAPE = False
