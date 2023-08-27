@@ -113,8 +113,8 @@ def resolve_credentials_configuration(ctx: Context, keyphrase: Optional[str] = N
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS = [ cfguri for cfguri in  CREDENTIALS_TABLE.keys() ]
 
     if MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_FILES is not None:
+        config_loader = ConfigurationLoader([], credentials=credentials)
         for cfile in MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_FILES:
-            config_loader = ConfigurationLoader([], credentials=credentials)
             config_info = config_loader.load_configuration_from_file(cfile, keyphrase=keyphrase)
             CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP.maps.insert(0, config_info)
 
@@ -149,8 +149,8 @@ def resolve_landscape_configuration(ctx: Context, keyphrase: Optional[str] = Non
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS = [ cfguri for cfguri in  LANDSCAPE_TABLE.keys() ]
 
     if MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_FILES is not None:
+        config_loader = ConfigurationLoader([], credentials=credentials)
         for cfile in MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_FILES:
-            config_loader = ConfigurationLoader([], credentials=credentials)
             config_info = config_loader.load_configuration_from_file(cfile, keyphrase=keyphrase)
             CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP.maps.insert(0, config_info)
 
@@ -183,8 +183,8 @@ def resolve_runtime_configuration(ctx: Context, keyphrase: Optional[str] = None,
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS = [ cfguri for cfguri in  RUNTIME_TABLE.keys() ]
 
     if MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_FILES is not None:
+        config_loader = ConfigurationLoader([], credentials=credentials)
         for cfile in MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_FILES:
-            config_loader = ConfigurationLoader([], credentials=credentials)
             config_info = config_loader.load_configuration_from_file(cfile, keyphrase=keyphrase)
             CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP.maps.insert(0, config_info)
 
@@ -217,8 +217,8 @@ def resolve_topology_configuration(ctx: Context, keyphrase: Optional[str] = None
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS = [ cfguri for cfguri in  TOPOLOGY_TABLE.keys() ]
 
     if MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_FILES is not None:
+        config_loader = ConfigurationLoader([], credentials=credentials)
         for cfile in MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_FILES:
-            config_loader = ConfigurationLoader([], credentials=credentials)
             config_info = config_loader.load_configuration_from_file(cfile, keyphrase=keyphrase)
             CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP.maps.insert(0, config_info)
 

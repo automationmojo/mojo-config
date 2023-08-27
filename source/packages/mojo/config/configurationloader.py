@@ -62,10 +62,10 @@ class ConfigurationLoader:
 
         _, fileext = os.path.splitext(config_file)
 
-        if fileext in ["yaml", "yml"]:
+        if fileext in [".yaml", ".yml"]:
             with open(config_file, 'r') as cf:
                 config_info = yaml.safe_load(cf)
-        elif fileext == "json":
+        elif fileext == ".json":
             with open(config_file, 'r') as cf:
                 config_info = json.load(cf)
 
