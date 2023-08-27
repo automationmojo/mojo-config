@@ -13,8 +13,9 @@ import os
 
 from collections import OrderedDict
 
+from mojo.collections.context import Context
+from mojo.collections.contextpaths import ContextPaths
 from mojo.collections.mergemap import MergeMap
-from mojo.collections.context import Context, ContextPaths
 from mojo.collections.wellknown import ContextSingleton
 
 from mojo.config.overrides import MOJO_CONFIG_OVERRIDES
@@ -44,6 +45,26 @@ def resolve_configuration_maps(
         keyphrase: Optional[str]=None,
         credentials: Optional[Dict[str, Tuple[str, str]]] = None):
 
+    if use_credentials is None:
+        use_credentials = MOJO_CONFIG_VARIABLES.MJR_CONFIG_USE_CREDENTIALS
+    else:
+        MOJO_CONFIG_VARIABLES.MJR_CONFIG_USE_CREDENTIALS = use_credentials
+
+    if use_landscape is None:
+        use_landscape = MOJO_CONFIG_VARIABLES.MJR_CONFIG_USE_LANDSCAPE
+    else:
+        MOJO_CONFIG_VARIABLES.MJR_CONFIG_USE_LANDSCAPE = use_landscape
+    
+    if use_runtime is None:
+        use_runtime = MOJO_CONFIG_VARIABLES.MJR_CONFIG_USE_RUNTIME
+    else:
+        MOJO_CONFIG_VARIABLES.MJR_CONFIG_USE_RUNTIME = use_runtime
+    
+    if use_topology is None:
+        use_topology = MOJO_CONFIG_VARIABLES.MJR_CONFIG_USE_TOPOLOGY
+    else:
+        MOJO_CONFIG_VARIABLES.MJR_CONFIG_USE_TOPOLOGY = use_topology
+
     if MOJO_CONFIG_VARNAMES.MJR_CONFIG_PASS_PHRASE in os.environ:
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_PASS_PHRASE = os.environ[MOJO_CONFIG_VARNAMES.MJR_CONFIG_PASS_PHRASE]
 
@@ -54,16 +75,16 @@ def resolve_configuration_maps(
 
     ctx = ContextSingleton()
 
-    if use_credentials is not None:
+    if use_credentials:
         resolve_credentials_configuration(ctx, keyphrase=keyphrase, credentials=credentials)
 
-    if use_landscape is not None:
+    if use_landscape:
         resolve_landscape_configuration(ctx, keyphrase=keyphrase, credentials=credentials)
 
-    if use_runtime is not None:
+    if use_runtime:
         resolve_runtime_configuration(ctx, keyphrase=keyphrase, credentials=credentials)
 
-    if use_topology is not None:
+    if use_topology:
         resolve_topology_configuration(ctx, keyphrase=keyphrase, credentials=credentials)
 
     return
@@ -73,26 +94,29 @@ def resolve_credentials_configuration(ctx: Context, keyphrase: Optional[str] = N
 
     global CREDENTIALS_TABLE
 
-    MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_CREDENTIALS = True
-
     MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS = []
-    if MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_CREDENTIALS:
-        config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_NAMES
-        if len(config_names) == 0:
-            config_names = ["credentials"]
-        source_uris = MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_SOURCES
 
-        config_loader = ConfigurationLoader(source_uris, credentials=credentials)
+    config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_NAMES
+    if len(config_names) == 0:
+        config_names = ["credentials"]
+    source_uris = MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_SOURCES
 
-        CREDENTIALS_TABLE = OrderedDict()
-        CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP = MergeMap()
+    config_loader = ConfigurationLoader(source_uris, credentials=credentials)
 
-        for cname in config_names:
-            config_uri, config_info = config_loader.load_configuration(cname, keyphrase=keyphrase)
-            CREDENTIALS_TABLE[config_uri] = config_info
+    CREDENTIALS_TABLE = OrderedDict()
+    CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP = MergeMap()
+
+    for cname in config_names:
+        config_uri, config_info = config_loader.load_configuration_by_name(cname, keyphrase=keyphrase)
+        CREDENTIALS_TABLE[config_uri] = config_info
+        CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP.maps.insert(0, config_info)
+
+    MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS = [ cfguri for cfguri in  CREDENTIALS_TABLE.keys() ]
+
+    if MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_FILES is not None:
+        for cfile in MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_FILES:
+            config_info = config_loader.load_configuration_from_file(cfile, keyphrase=keyphrase)
             CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP.maps.insert(0, config_info)
-
-        MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS = [ cfguri for cfguri in  CREDENTIALS_TABLE.keys() ]
 
     ctx.insert(ContextPaths.CONFIG_CREDENTIAL_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS)
     # For now, we don't want to put the CREDENTIALS CONFIGURATION into the context, because at the moment we don't 
@@ -106,26 +130,29 @@ def resolve_landscape_configuration(ctx: Context, keyphrase: Optional[str] = Non
 
     global LANDSCAPE_TABLE
 
-    MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_LANDSCAPE = True
-
     MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS = []
-    if MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_LANDSCAPE:
-        config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_NAMES
-        if len(config_names) == 0:
-            config_names = ["default-landscape"]
-        source_uris = MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_SOURCES
+    
+    config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_NAMES
+    if len(config_names) == 0:
+        config_names = ["default-landscape"]
+    source_uris = MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_SOURCES
 
-        config_loader = ConfigurationLoader(source_uris, credentials=credentials)
+    config_loader = ConfigurationLoader(source_uris, credentials=credentials)
 
-        LANDSCAPE_TABLE = OrderedDict()
-        CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP = MergeMap()
+    LANDSCAPE_TABLE = OrderedDict()
+    CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP = MergeMap()
 
-        for cname in config_names:
-            config_uri, config_info = config_loader.load_configuration(cname, keyphrase=keyphrase)
-            LANDSCAPE_TABLE[config_uri] = config_info
+    for cname in config_names:
+        config_uri, config_info = config_loader.load_configuration_by_name(cname, keyphrase=keyphrase)
+        LANDSCAPE_TABLE[config_uri] = config_info
+        CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP.maps.insert(0, config_info)
+
+    MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS = [ cfguri for cfguri in  LANDSCAPE_TABLE.keys() ]
+
+    if MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_FILES is not None:
+        for cfile in MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_FILES:
+            config_info = config_loader.load_configuration_from_file(cfile, keyphrase=keyphrase)
             CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP.maps.insert(0, config_info)
-
-        MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS = [ cfguri for cfguri in  LANDSCAPE_TABLE.keys() ]
 
     ctx.insert(ContextPaths.CONFIG_LANDSCAPE_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS)
     ctx.insert(ContextPaths.CONFIG_LANDSCAPE, CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP)
@@ -137,26 +164,29 @@ def resolve_runtime_configuration(ctx: Context, keyphrase: Optional[str] = None,
 
     global RUNTIME_TABLE
 
-    MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_RUNTIME = True
-
     MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS = []
-    if MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_RUNTIME:
-        config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_NAMES
-        if len(config_names) == 0:
-            config_names = ["default-runtime"]
-        source_uris = MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_SOURCES
+    
+    config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_NAMES
+    if len(config_names) == 0:
+        config_names = ["default-runtime"]
+    source_uris = MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_SOURCES
 
-        config_loader = ConfigurationLoader(source_uris, credentials=credentials)
+    config_loader = ConfigurationLoader(source_uris, credentials=credentials)
 
-        RUNTIME_TABLE = OrderedDict()
-        CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP = MergeMap()
+    RUNTIME_TABLE = OrderedDict()
+    CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP = MergeMap()
 
-        for cname in config_names:
-            config_uri, config_info = config_loader.load_configuration(cname, keyphrase=keyphrase)
-            RUNTIME_TABLE[config_uri] = config_info
+    for cname in config_names:
+        config_uri, config_info = config_loader.load_configuration_by_name(cname, keyphrase=keyphrase)
+        RUNTIME_TABLE[config_uri] = config_info
+        CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP.maps.insert(0, config_info)
+
+    MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS = [ cfguri for cfguri in  RUNTIME_TABLE.keys() ]
+
+    if MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_FILES is not None:
+        for cfile in MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_FILES:
+            config_info = config_loader.load_configuration_from_file(cfile, keyphrase=keyphrase)
             CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP.maps.insert(0, config_info)
-
-        MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS = [ cfguri for cfguri in  RUNTIME_TABLE.keys() ]
 
     ctx.insert(ContextPaths.CONFIG_RUNTIME_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS)
     ctx.insert(ContextPaths.CONFIG_RUNTIME, CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP)
@@ -168,26 +198,29 @@ def resolve_topology_configuration(ctx: Context, keyphrase: Optional[str] = None
 
     global TOPOLOGY_TABLE
 
-    MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_TOPOLOGY = True
-
     MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS = []
-    if MOJO_CONFIG_OVERRIDES.MJR_CONFIG_USE_TOPOLOGY:
-        config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_NAMES
-        if len(config_names) == 0:
-            config_names = ["default-topology"]
-        source_uris = MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_SOURCES
 
-        config_loader = ConfigurationLoader(source_uris, credentials=credentials)
+    config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_NAMES
+    if len(config_names) == 0:
+        config_names = ["default-topology"]
+    source_uris = MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_SOURCES
 
-        TOPOLOGY_TABLE = OrderedDict()
-        CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP = MergeMap()
+    config_loader = ConfigurationLoader(source_uris, credentials=credentials)
 
-        for cname in config_names:
-            config_uri, config_info = config_loader.load_configuration(cname, keyphrase=keyphrase)
-            TOPOLOGY_TABLE[config_uri] = config_info
+    TOPOLOGY_TABLE = OrderedDict()
+    CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP = MergeMap()
+
+    for cname in config_names:
+        config_uri, config_info = config_loader.load_configuration_by_name(cname, keyphrase=keyphrase)
+        TOPOLOGY_TABLE[config_uri] = config_info
+        CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP.maps.insert(0, config_info)
+
+    MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS = [ cfguri for cfguri in  TOPOLOGY_TABLE.keys() ]
+
+    if MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_FILES is not None:
+        for cfile in MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_FILES:
+            config_info = config_loader.load_configuration_from_file(cfile, keyphrase=keyphrase)
             CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP.maps.insert(0, config_info)
-
-        MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS = [ cfguri for cfguri in  TOPOLOGY_TABLE.keys() ]
 
     ctx.insert(ContextPaths.CONFIG_TOPOLOGY_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS)
     ctx.insert(ContextPaths.CONFIG_TOPOLOGY, CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP)

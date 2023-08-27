@@ -40,8 +40,59 @@ class ConfigurationLoader:
     def sources(self) -> List[ConfigurationSourceBase]:
         return self._sources
 
-    def load_configuration(self, config_name: str, key: Optional[str] = None, keyphrase: Optional[str] = None) -> Tuple[str, dict]:
+    def load_configuration_from_file(self, config_file: str, key: Optional[str] = None, keyphrase: Optional[str] = None) -> dict:
         """
+            Loads a configuration directly from a file.
+
+            :param config_name: The path to the configuration file to load.
+            :param key: An optional key to use for encrypted configurations.
+            :param keyphrase: An optional phrase to use for generating the decryption key.
+
+            :returns: A deep dictionary containing the configuration that was loaded.
+        """
+
+        if key is not None and keyphrase is not None:
+            errmsg = "The 'load_configuration' method should be called with either 'key' or 'keyphrase' but not both."
+            raise SemanticError(errmsg)
+
+        if keyphrase is not None:
+            key = generate_fernet_key(keyphrase)
+
+        config_info = None
+
+        _, fileext = os.path.splitext(config_file)
+
+        if fileext in ["yaml", "yml"]:
+            with open(config_file, 'r') as cf:
+                config_info = yaml.safe_load(cf)
+        elif fileext == "json":
+            with open(config_file, 'r') as cf:
+                config_info = json.load(cf)
+
+        if "encrypted_content" in config_info:
+            if "format" in config_info:
+                config_format = config_info["format"]
+
+            decryptor = Fernet(key)
+            
+            encrypted_content = base64.b64decode(config_info["encrypted_content"])
+            
+            plain_content = decryptor.decrypt(encrypted_content).decode('utf-8')
+
+            if config_format == ConfigurationFormat.YAML:
+                config_info = yaml.safe_load(plain_content)
+            elif config_format == ConfigurationFormat.JSON:
+                config_info = json.loads(plain_content)
+            else:
+                errmsg = "UnExpected error parsing decrypted configuration content.  Un-supported format."
+                raise ConfigurationError(errmsg)
+
+        return config_info
+
+    def load_configuration_by_name(self, config_name: str, key: Optional[str] = None, keyphrase: Optional[str] = None) -> Tuple[str, dict]:
+        """
+            Searches a list of sources to locate a configuration by name and then loads the configuration.
+
             :param config_name: The name of the configuration to load.
             :param key: An optional key to use for encrypted configurations.
             :param keyphrase: An optional phrase to use for generating the decryption key.
