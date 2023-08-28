@@ -56,6 +56,8 @@ class DirectorySource(ConfigurationSourceBase):
                 with open(checkfile, 'r') as cf:
                     if config_format == ConfigurationFormat.YAML:
                         config_info = yaml.safe_load(cf)
+                        if config_info == None: # We likely encountered an empty config file
+                            config_info = {}
                     elif config_format == ConfigurationFormat.JSON:
                         config_info = json.load(cf)
                 break
