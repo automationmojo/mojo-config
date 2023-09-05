@@ -39,7 +39,7 @@ class DirectorySource(ConfigurationSourceBase):
             matchinfo = mobj.groupdict()
             directory = matchinfo["directory"]
             rtnobj = DirectorySource(uri, directory)
-        elif os.path.isdir(uri):
+        else:
             rtnobj = DirectorySource(uri, uri)
 
         return rtnobj
