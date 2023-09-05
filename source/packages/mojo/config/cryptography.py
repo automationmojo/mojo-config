@@ -12,6 +12,7 @@ import random
 
 from cryptography.fernet import Fernet
 
+from mojo.config.configurationformat import ConfigurationFormat
 
 def encode_key(key: bytes) -> str:
     rtnval = base64.b64encode(key)
@@ -41,12 +42,13 @@ def generate_fernet_key(keyphrase: str) -> str:
     return key
 
 
-def create_encrypted_configuration(key: str, plain_configuration: str):
+def create_encrypted_configuration(key: str, plain_configuration: str, format: str=ConfigurationFormat.JSON):
 
     encrypted_configuration = encrypt_content(key, plain_configuration)
 
     docinfo = {
         "version": "1.0",
+        "format": format,
         "encrypted_content": encrypted_configuration
     }
 
