@@ -180,7 +180,7 @@ class ConfigurationLoader:
                 
                 self._sources.append(src)
 
-            elif uri.startswith(DirectorySource.scheme) or os.path.isdir(uri):
+            else:
                 src = DirectorySource.parse(uri)
                 
                 if src is None:
@@ -188,9 +188,5 @@ class ConfigurationLoader:
                     raise ConfigurationError(errmsg)
 
                 self._sources.append(src)
-
-            else:
-                errmsg = f"Un-Supported configuration source encountered uri='{uri}'"
-                raise ConfigurationError(errmsg)
 
         return
