@@ -40,10 +40,8 @@ def split_and_normalize_path_list(paths_val: str, sep: str=SEPARATOR):
     return norm_paths
 
 def split_and_normalize_source_list(sources_val: str, sep: str=SEPARATOR) -> List[str]:
-    norm_sources: List[str] = []
 
     search_sources: List[str] = sources_val.split(sep)
-    for nxtsrc in search_sources:
-        norm_sources.append(nxtsrc.strip())
+    norm_sources = normalize_path_list(search_sources)
 
     return norm_sources

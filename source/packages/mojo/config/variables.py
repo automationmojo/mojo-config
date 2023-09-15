@@ -11,6 +11,7 @@
 import os
 
 from mojo.collections.wellknown import ContextSingleton
+from mojo.collections.contextpaths import ContextPaths
 
 from mojo.config.normalize import (
     split_and_normalize_name_list,
@@ -103,10 +104,13 @@ def resolve_configuration_variables():
 
     if MOJO_CONFIG_VARNAMES.MJR_HOME_DIRECTORY in environ:
         MOJO_CONFIG_VARIABLES.MJR_HOME_DIRECTORY = environ[MOJO_CONFIG_VARNAMES.MJR_HOME_DIRECTORY]
+    ctx.insert(ContextPaths.RUNTIME_HOME_DIRECTORY, MOJO_CONFIG_VARIABLES.MJR_HOME_DIRECTORY)
+
 
     MOJO_CONFIG_VARIABLES.MJR_CONFIG_DIRECTORY = os.path.join(MOJO_CONFIG_VARIABLES.MJR_HOME_DIRECTORY, "config")
     if MOJO_CONFIG_VARNAMES.MJR_CONFIG_DIRECTORY in environ:
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_DIRECTORY = environ[MOJO_CONFIG_VARNAMES.MJR_CONFIG_DIRECTORY]
+    ctx.insert(ContextPaths.RUNTIME_CONFIG_DIRECTORY, MOJO_CONFIG_VARIABLES.MJR_CONFIG_DIRECTORY)
 
     # ====================== PROCESS CREDENTIAL VARIABLES ==============================
 
