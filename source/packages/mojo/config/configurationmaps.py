@@ -18,8 +18,13 @@ from mojo.collections.contextpaths import ContextPaths
 from mojo.collections.mergemap import MergeMap
 from mojo.collections.wellknown import ContextSingleton
 
-from mojo.config.overrides import MOJO_CONFIG_OVERRIDES
-from mojo.config.variables import MOJO_CONFIG_VARNAMES, MOJO_CONFIG_VARIABLES
+
+from mojo.config.variables import (
+    MOJO_CONFIG_VARNAMES,
+    MOJO_CONFIG_VARIABLES,
+    CONFIGURATION_MAPS
+)
+
 
 from mojo.config.configurationloader import ConfigurationLoader
 
@@ -28,13 +33,6 @@ CREDENTIALS_TABLE = None
 LANDSCAPE_TABLE = None
 RUNTIME_TABLE = None
 TOPOLOGY_TABLE = None
-
-
-class CONFIGURATION_MAPS:
-    CREDENTIAL_CONFIGURATION_MAP = None
-    LANDSCAPE_CONFIGURATION_MAP = None
-    RUNTIME_CONFIGURATION_MAP = MergeMap(MOJO_CONFIG_OVERRIDES.DEFAULT_CONFIGURATION)
-    TOPOLOGY_CONFIGURATION_MAP = None
 
 
 def resolve_configuration_maps(
@@ -97,8 +95,7 @@ def resolve_credentials_configuration(ctx: Context, keyphrase: Optional[str] = N
     CREDENTIALS_TABLE = OrderedDict()
 
     MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS = []
-    CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP = MergeMap()
-
+    
     config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_NAMES
     config_files = MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_FILES
 
@@ -124,9 +121,6 @@ def resolve_credentials_configuration(ctx: Context, keyphrase: Optional[str] = N
             config_info = config_loader.load_configuration_from_file(cfile, keyphrase=keyphrase)
             CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP.maps.insert(0, config_info)
 
-    # For now, we don't want to put the CREDENTIALS CONFIGURATION into the context, because at the moment we don't 
-    # want to pass it around in the plain.  Possibly what we can do is create a version of MergeMap that will serialize
-    # with a protective pass key or something like that.
     ctx.insert(ContextPaths.CONFIG_CREDENTIAL_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_URIS)
 
     return
@@ -167,7 +161,6 @@ def resolve_landscape_configuration(ctx: Context, keyphrase: Optional[str] = Non
             CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP.maps.insert(0, config_info)
 
     ctx.insert(ContextPaths.CONFIG_LANDSCAPE_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS)
-    ctx.insert(ContextPaths.CONFIG_LANDSCAPE, CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP)
 
     return
 
@@ -207,7 +200,6 @@ def resolve_runtime_configuration(ctx: Context, keyphrase: Optional[str] = None,
             CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP.maps.insert(0, config_info)
 
     ctx.insert(ContextPaths.CONFIG_RUNTIME_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS)
-    ctx.insert(ContextPaths.CONFIG_RUNTIME, CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP)
 
     return
 
@@ -247,7 +239,6 @@ def resolve_topology_configuration(ctx: Context, keyphrase: Optional[str] = None
             CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP.maps.insert(0, config_info)
 
     ctx.insert(ContextPaths.CONFIG_TOPOLOGY_URIS, MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS)
-    ctx.insert(ContextPaths.CONFIG_TOPOLOGY, CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP)
 
     return
 

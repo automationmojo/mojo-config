@@ -12,6 +12,8 @@ import os
 
 from mojo.collections.wellknown import ContextSingleton
 from mojo.collections.contextpaths import ContextPaths
+from mojo.collections.mergemap import MergeMap
+
 
 from mojo.config.normalize import (
     split_and_normalize_name_list,
@@ -19,6 +21,13 @@ from mojo.config.normalize import (
     split_and_normalize_source_list
 )
 from mojo.config.overrides import MOJO_CONFIG_OVERRIDES
+
+
+class CONFIGURATION_MAPS:
+    CREDENTIAL_CONFIGURATION_MAP = MergeMap()
+    LANDSCAPE_CONFIGURATION_MAP = MergeMap()
+    RUNTIME_CONFIGURATION_MAP = MergeMap(MOJO_CONFIG_OVERRIDES.DEFAULT_CONFIGURATION)
+    TOPOLOGY_CONFIGURATION_MAP = MergeMap()
 
 
 class MOJO_CONFIG_VARNAMES:
@@ -98,6 +107,13 @@ def resolve_configuration_variables():
     environ = os.environ
 
     ctx = ContextSingleton()
+
+    # For now, we don't want to put the CREDENTIALS CONFIGURATION into the context, because at the moment we don't 
+    # want to pass it around in the plain.  Possibly what we can do is create a version of MergeMap that will serialize
+    # with a protective pass key or something like that.
+    ctx.insert(ContextPaths.CONFIG_LANDSCAPE, CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP)
+    ctx.insert(ContextPaths.CONFIG_TOPOLOGY, CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP)
+    ctx.insert(ContextPaths.CONFIG_RUNTIME, CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP)
 
     MOJO_CONFIG_VARIABLES.MJR_NAME = MOJO_CONFIG_OVERRIDES.MJR_NAME
     MOJO_CONFIG_VARIABLES.MJR_HOME_DIRECTORY = os.path.expandvars(os.path.expanduser(MOJO_CONFIG_OVERRIDES.MJR_HOME_DIRECTORY))
