@@ -18,16 +18,40 @@ __license__ = "MIT"
 
 import os
 
+from mojo.startup.wellknown import StartupConfigSingleton
+
+default_config = {}
+
+startup_config = StartupConfigSingleton()
+if "DEFAULT" in startup_config:
+    default_config = startup_config["DEFAULT"]
+
 class MOJO_CONFIG_OVERRIDES:
 
     MJR_NAME = "mjr"
+    if "MJR_NAME" in default_config:
+        MJR_NAME = default_config["MJR_NAME"]
 
     MJR_HOME_DIRECTORY = os.path.expanduser("~/{}".format(MJR_NAME))
+    if "MJR_HOME_DIRECTORY" in default_config:
+        MJR_HOME_DIRECTORY = default_config["MJR_HOME_DIRECTORY"]
+        MJR_HOME_DIRECTORY = os.path.abspath(os.path.expandvars(os.path.expanduser(MJR_HOME_DIRECTORY)))
 
     MJR_CONFIG_REQUIRE_CREDENTIALS = False
+    if "MJR_CONFIG_REQUIRE_CREDENTIALS" in default_config:
+        MJR_CONFIG_REQUIRE_CREDENTIALS = default_config["MJR_CONFIG_REQUIRE_CREDENTIALS"]
+
     MJR_CONFIG_REQUIRE_LANDSCAPE = False
+    if "MJR_CONFIG_REQUIRE_LANDSCAPE" in default_config:
+        MJR_CONFIG_REQUIRE_LANDSCAPE = default_config["MJR_CONFIG_REQUIRE_LANDSCAPE"]
+
     MJR_CONFIG_REQUIRE_RUNTIME = False
+    if "MJR_CONFIG_REQUIRE_RUNTIME" in default_config:
+        MJR_CONFIG_REQUIRE_RUNTIME = default_config["MJR_CONFIG_REQUIRE_RUNTIME"]
+
     MJR_CONFIG_REQUIRE_TOPOLOGY = False
+    if "MJR_CONFIG_REQUIRE_TOPOLOGY" in default_config:
+        MJR_CONFIG_REQUIRE_TOPOLOGY = default_config["MJR_CONFIG_REQUIRE_TOPOLOGY"]
 
     DEFAULT_CONFIGURATION = {
         "version": "1.0.0",
