@@ -22,6 +22,7 @@ from mojo.config.normalize import (
     split_and_normalize_path_list,
     split_and_normalize_source_list
 )
+
 from mojo.config.overrides import MOJO_CONFIG_OVERRIDES
 
 
