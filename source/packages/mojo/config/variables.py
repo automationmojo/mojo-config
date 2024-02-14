@@ -10,7 +10,7 @@
 
 import os
 
-from mojo.startup.startupvariables import MOJO_STARTUP_VARIABLES
+from mojo.extension.extensionvariables import MOJO_EXTENSION_VARIABLES
 
 from mojo.collections.wellknown import ContextSingleton
 from mojo.collections.contextpaths import ContextPaths
@@ -64,16 +64,7 @@ class MOJO_CONFIG_VARNAMES:
     MJR_CONFIG_RUNTIME_FILES = "MJR_CONFIG_RUNTIME_FILES"
 
 
-class MOJO_CONFIG_VARIABLES(MOJO_STARTUP_VARIABLES):
-
-    MJR_NAME = "mjr"
-    if "MJR_NAME" in os.environ:
-        MJR_NAME = os.environ["MJR_NAME"]
-
-    MJR_HOME_DIRECTORY = os.path.expanduser(os.path.join("~", MJR_NAME))
-    if "MJR_HOME_DIRECTORY" in os.environ:
-        MJR_HOME_DIRECTORY = os.environ["MJR_HOME_DIRECTORY"]
-        MJR_HOME_DIRECTORY = os.path.abspath(os.path.expandvars(os.path.expanduser(MJR_HOME_DIRECTORY)))
+class MOJO_CONFIG_VARIABLES(MOJO_EXTENSION_VARIABLES):
 
     MJR_CONFIG_REQUIRE_CREDENTIALS = MOJO_CONFIG_OVERRIDES.MJR_CONFIG_REQUIRE_CREDENTIALS
     MJR_CONFIG_REQUIRE_LANDSCAPE = MOJO_CONFIG_OVERRIDES.MJR_CONFIG_REQUIRE_LANDSCAPE
@@ -85,7 +76,7 @@ class MOJO_CONFIG_VARIABLES(MOJO_STARTUP_VARIABLES):
     MJR_CONFIG_USE_RUNTIME = False
     MJR_CONFIG_USE_TOPOLOGY = False
 
-    MJR_CONFIG_DIRECTORY = os.path.join(MJR_HOME_DIRECTORY, "config")
+    MJR_CONFIG_DIRECTORY = os.path.join(MOJO_EXTENSION_VARIABLES.MJR_HOME_DIRECTORY, "config")
 
     MJR_CONFIG_PASS_PHRASE = None
 
