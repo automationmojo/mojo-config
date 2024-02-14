@@ -524,6 +524,21 @@ files = [
 ]
 
 [[package]]
+name = "mojo-extension"
+version = "1.3.6"
+description = "Automation Mojo Extension Package"
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "mojo_extension-1.3.6-py3-none-any.whl", hash = "sha256:abbd8c3ce869adbabb772b5cc9edf400a7507508a1694de83076082ad90fb074"},
+    {file = "mojo_extension-1.3.6.tar.gz", hash = "sha256:db21dc9e111442d145fb825598d02fc44c0506d5dee5c1317e0d943e44ebf0b1"},
+]
+
+[package.dependencies]
+mojo-startup = ">=1.3.5,<1.4.0"
+
+[[package]]
 name = "mojo-startup"
 version = "1.3.5"
 description = "Automation Mojo Startup Package"
@@ -1032,4 +1047,4 @@ mongodb = ["pymongo"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<4.0"
-content-hash = "98f25c2981d55a51920e112d9e027fbd2f5acf28e0f9613efa7586881284110c"
+content-hash = "595a9d275c08b8d822d376cc01e7c265b7e4d9bdd6f6c3799b4d8d8e75c82a73"
