@@ -525,14 +525,14 @@ files = [
 
 [[package]]
 name = "mojo-extension"
-version = "1.3.6"
+version = "1.3.7"
 description = "Automation Mojo Extension Package"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "mojo_extension-1.3.6-py3-none-any.whl", hash = "sha256:abbd8c3ce869adbabb772b5cc9edf400a7507508a1694de83076082ad90fb074"},
-    {file = "mojo_extension-1.3.6.tar.gz", hash = "sha256:db21dc9e111442d145fb825598d02fc44c0506d5dee5c1317e0d943e44ebf0b1"},
+    {file = "mojo_extension-1.3.7-py3-none-any.whl", hash = "sha256:a6801afab199e80bb176f656227165eb3043521b29dc088d5a7327078356afb4"},
+    {file = "mojo_extension-1.3.7.tar.gz", hash = "sha256:aeeb995bbdaeac83df12d7a450fddf14798676806651df195fef415a98b1b853"},
 ]
 
 [package.dependencies]
