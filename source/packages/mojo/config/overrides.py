@@ -28,15 +28,6 @@ if "DEFAULT" in startup_config:
 
 class MOJO_CONFIG_OVERRIDES:
 
-    MJR_NAME = "mjr"
-    if "MJR_NAME" in default_config:
-        MJR_NAME = default_config["MJR_NAME"]
-
-    MJR_HOME_DIRECTORY = os.path.expanduser("~/{}".format(MJR_NAME))
-    if "MJR_HOME_DIRECTORY" in default_config:
-        MJR_HOME_DIRECTORY = default_config["MJR_HOME_DIRECTORY"]
-        MJR_HOME_DIRECTORY = os.path.abspath(os.path.expandvars(os.path.expanduser(MJR_HOME_DIRECTORY)))
-
     MJR_CONFIG_REQUIRE_CREDENTIALS = False
     if "MJR_CONFIG_REQUIRE_CREDENTIALS" in default_config:
         MJR_CONFIG_REQUIRE_CREDENTIALS = default_config["MJR_CONFIG_REQUIRE_CREDENTIALS"]
