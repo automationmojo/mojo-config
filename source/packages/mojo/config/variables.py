@@ -10,7 +10,10 @@
 
 import os
 
-from mojo.extension.extensionvariables import MOJO_EXTENSION_VARIABLES
+from mojo.extension.extensionvariables import (
+    MOJO_EXTENSION_VARIABLES,
+    resolve_extension_variables
+)
 
 from mojo.collections.wellknown import ContextSingleton
 from mojo.collections.contextpaths import ContextPaths
@@ -102,6 +105,10 @@ class MOJO_CONFIG_VARIABLES(MOJO_EXTENSION_VARIABLES):
 
 
 def resolve_configuration_variables():
+
+    # We need to resolve extension variables because we are
+    # dependent on some of them.
+    resolve_extension_variables()
 
     environ = os.environ
 
