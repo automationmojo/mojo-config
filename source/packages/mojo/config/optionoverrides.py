@@ -15,7 +15,7 @@ from mojo.collections.contextpaths import ContextPaths
 from mojo.collections.wellknown import ContextSingleton
 
 from mojo.config.normalize import normalize_path_list
-from mojo.config.overrides import MOJO_CONFIG_OVERRIDES
+from mojo.config.configurationsettings import MOJO_CONFIG_DEFAULTS
 from mojo.config.variables import MOJO_CONFIG_VARIABLES
 
 
@@ -190,9 +190,9 @@ class MOJO_CONFIG_OPTION_OVERRIDES:
             :param require_topology: Indicates a topology configuration file is required.
         """
 
-        MOJO_CONFIG_OVERRIDES.MJR_CONFIG_REQUIRE_CREDENTIALS = require_credentials
-        MOJO_CONFIG_OVERRIDES.MJR_CONFIG_REQUIRE_LANDSCAPE = require_landscape
-        MOJO_CONFIG_OVERRIDES.MJR_CONFIG_REQUIRE_RUNTIME = require_runtime
-        MOJO_CONFIG_OVERRIDES.MJR_CONFIG_REQUIRE_TOPOLOGY = require_topology
+        MOJO_CONFIG_DEFAULTS.MJR_CONFIG_REQUIRE_CREDENTIALS = require_credentials
+        MOJO_CONFIG_DEFAULTS.MJR_CONFIG_REQUIRE_LANDSCAPE = require_landscape
+        MOJO_CONFIG_DEFAULTS.MJR_CONFIG_REQUIRE_RUNTIME = require_runtime
+        MOJO_CONFIG_DEFAULTS.MJR_CONFIG_REQUIRE_TOPOLOGY = require_topology
 
         return

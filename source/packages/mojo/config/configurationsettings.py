@@ -16,9 +16,10 @@ __email__ = "myron.walker@gmail.com"
 __status__ = "Development" # Prototype, Development or Production
 __license__ = "MIT"
 
-import os
+from typing import Optional
 
 from mojo.startup.wellknown import StartupConfigSingleton
+from mojo.extension.extensionsettings import establish_startup_settings
 
 default_config = {}
 
@@ -26,7 +27,7 @@ startup_config = StartupConfigSingleton()
 if "DEFAULT" in startup_config:
     default_config = startup_config["DEFAULT"]
 
-class MOJO_CONFIG_OVERRIDES:
+class MOJO_CONFIG_DEFAULTS:
 
     MJR_CONFIG_REQUIRE_CREDENTIALS = False
     if "MJR_CONFIG_REQUIRE_CREDENTIALS" in default_config:
@@ -53,3 +54,13 @@ class MOJO_CONFIG_OVERRIDES:
             }
         }
     }
+
+
+def establish_config_settings(*, name: Optional[str]=None, home_dir: Optional[str]=None,  default_configuration: Optional[dict]=None):
+
+    establish_startup_settings(name=name, home_dir=home_dir)
+
+    if default_configuration is not None:
+        MOJO_CONFIG_DEFAULTS.DEFAULT_CONFIGURATION = default_configuration
+
+    return
