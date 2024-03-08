@@ -19,7 +19,7 @@ __license__ = "MIT"
 from typing import Optional
 
 from mojo.startup.wellknown import StartupConfigSingleton
-from mojo.extension.extensionsettings import establish_startup_settings
+from mojo.extension.extensionsettings import establish_extension_settings
 
 default_config = {}
 
@@ -56,11 +56,18 @@ class MOJO_CONFIG_DEFAULTS:
     }
 
 
+CONFIG_SETTINGS_ESTABLISHED = False
+
 def establish_config_settings(*, name: Optional[str]=None, home_dir: Optional[str]=None,  default_configuration: Optional[dict]=None):
 
-    establish_startup_settings(name=name, home_dir=home_dir)
+    global CONFIG_SETTINGS_ESTABLISHED
 
-    if default_configuration is not None:
-        MOJO_CONFIG_DEFAULTS.DEFAULT_CONFIGURATION = default_configuration
+    if not CONFIG_SETTINGS_ESTABLISHED:
+        CONFIG_SETTINGS_ESTABLISHED = True
+
+        establish_extension_settings(name=name, home_dir=home_dir)
+
+        if default_configuration is not None:
+            MOJO_CONFIG_DEFAULTS.DEFAULT_CONFIGURATION = default_configuration
 
     return
