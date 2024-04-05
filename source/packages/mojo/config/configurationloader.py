@@ -17,7 +17,7 @@ from mojo.config.sources.httpsource import HttpSource
 from mojo.errors.exceptions import ConfigurationError, SemanticError
 
 from mojo.config.configurationformat import ConfigurationFormat
-from mojo.config.cryptography import generate_fernet_key
+from mojo.config.cryptography import generate_fernet_key, decrypt_content
 
 class ConfigurationLoader:
     """
@@ -32,13 +32,16 @@ class ConfigurationLoader:
         self._initialize()
         return
 
+
     @property
     def source_uris(self) -> List[str]:
         return self._source_uris
 
+
     @property
     def sources(self) -> List[ConfigurationSourceBase]:
         return self._sources
+
 
     def load_configuration_from_file(self, config_file: str, key: Optional[str] = None, keyphrase: Optional[str] = None) -> dict:
         """
@@ -89,6 +92,7 @@ class ConfigurationLoader:
 
         return config_info
 
+
     def load_configuration_by_name(self, config_name: str, key: Optional[str] = None, keyphrase: Optional[str] = None) -> Tuple[str, dict]:
         """
             Searches a list of sources to locate a configuration by name and then loads the configuration.
@@ -134,11 +138,9 @@ class ConfigurationLoader:
             if "format" in config_info:
                 config_format = config_info["format"]
 
-            decryptor = Fernet(key)
-            
-            encrypted_content = base64.b64decode(config_info["encrypted_content"])
-            
-            plain_content = decryptor.decrypt(encrypted_content).decode('utf-8')
+            encrypted_content = config_info["encrypted_content"]
+
+            plain_content = decrypt_content(key, encrypted_content)
 
             if config_format == ConfigurationFormat.YAML:
                 config_info = yaml.safe_load(plain_content)
@@ -149,6 +151,7 @@ class ConfigurationLoader:
                 raise ConfigurationError(errmsg)
 
         return config_uri, config_info
+
 
     def _initialize(self):
 
