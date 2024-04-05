@@ -24,7 +24,10 @@ EXTENSION_TO_CONFIG_FORMAT = {
 class HttpSource(ConfigurationSourceBase):
 
     scheme = "http"
-    parse_exp = re.compile(r"http://(?P<baseurl>[\S]+)")
+    secure_scheme = "https"
+
+    parse_http_exp = re.compile(r"http://(?P<baseurl>[\S]+)")
+    parse_https_exp = re.compile(r"https://(?P<baseurl>[\S]+)")
 
     def __init__(self, uri: str):
         super().__init__(uri)
@@ -35,16 +38,12 @@ class HttpSource(ConfigurationSourceBase):
 
         rtnobj = None
 
-        mobj = cls.parse_exp.match(uri)
+        mobj = cls.parse_http_exp.match(uri)
         if mobj is not None:
-            try:
-                import couchdb
-            except ImportError:
-                errmsg = "You must install the 'couchdb' module in order to use couchdb sources."
-                raise ConfigurationError(errmsg)
-
-            matchinfo = mobj.groupdict()
-
+            rtnobj = HttpSource(uri)
+        
+        mobj = cls.parse_https_exp.match(uri)
+        if mobj is not None:
             rtnobj = HttpSource(uri)
 
         return rtnobj
