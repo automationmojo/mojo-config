@@ -14,7 +14,7 @@ from datetime import datetime
 from mojo.collections.contextpaths import ContextPaths
 from mojo.collections.wellknown import ContextSingleton
 
-from mojo.config.normalize import normalize_path_list
+from mojo.config.normalize import normalize_file_path_list, normalize_source_path_list
 from mojo.config.configurationsettings import MOJO_CONFIG_DEFAULTS
 from mojo.config.variables import MOJO_CONFIG_VARIABLES
 
@@ -44,6 +44,7 @@ class MOJO_CONFIG_OPTION_OVERRIDES:
 
             :param sources: The uri(s) of to use as the credential config search uri(s).
         """
+        sources = normalize_source_path_list(sources)
         ctx.insert(ContextPaths.CONFIG_CREDENTIAL_SOURCES, sources)
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_SOURCES = sources
         return
@@ -56,7 +57,7 @@ class MOJO_CONFIG_OPTION_OVERRIDES:
 
             :param filepaths: A list of file paths for configuration files.
         """
-        filepaths = normalize_path_list(filepaths)
+        filepaths = normalize_file_path_list(filepaths)
         ctx.insert(ContextPaths.CONFIG_CREDENTIAL_FILES, filepaths)
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_CREDENTIAL_FILES = filepaths
         return
@@ -82,6 +83,7 @@ class MOJO_CONFIG_OPTION_OVERRIDES:
 
             :param sources: The uri(s) of to use as the landscape config search uri(s).
         """
+        sources = normalize_source_path_list(sources)
         ctx.insert(ContextPaths.CONFIG_LANDSCAPE_SOURCES, sources)
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_SOURCES = sources
         return
@@ -94,7 +96,7 @@ class MOJO_CONFIG_OPTION_OVERRIDES:
 
             :param filepaths: A list of file paths for configuration files.
         """
-        filepaths = normalize_path_list(filepaths)
+        filepaths = normalize_file_path_list(filepaths)
         ctx.insert(ContextPaths.CONFIG_LANDSCAPE_FILES, filepaths)
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_FILES = filepaths
         return
@@ -121,6 +123,7 @@ class MOJO_CONFIG_OPTION_OVERRIDES:
             :param sources: The uri(s) of to use as the runtime config search uri(s).
 
         """
+        sources = normalize_source_path_list(sources)
         ctx.insert(ContextPaths.CONFIG_RUNTIME_SOURCES, sources)
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_SOURCES = sources
         return
@@ -133,7 +136,7 @@ class MOJO_CONFIG_OPTION_OVERRIDES:
 
             :param filepaths: A list of file paths for configuration files.
         """
-        filepaths = normalize_path_list(filepaths)
+        filepaths = normalize_file_path_list(filepaths)
         ctx.insert(ContextPaths.CONFIG_RUNTIME_FILES, filepaths)
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_FILES = filepaths
         return
@@ -160,6 +163,7 @@ class MOJO_CONFIG_OPTION_OVERRIDES:
 
             :param sources: The uri(s) of to use as the topology config search uri(s).
         """
+        sources = normalize_source_path_list(sources)
         ctx.insert(ContextPaths.CONFIG_TOPOLOGY_SOURCES, sources)
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_SOURCES = sources
         return
@@ -172,7 +176,7 @@ class MOJO_CONFIG_OPTION_OVERRIDES:
 
             :param filepaths: A list of file paths for configuration files.
         """
-        filepaths = normalize_path_list(filepaths)
+        filepaths = normalize_file_path_list(filepaths)
         ctx.insert(ContextPaths.CONFIG_TOPOLOGY_FILES, filepaths)
         MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_FILES = filepaths
         return
