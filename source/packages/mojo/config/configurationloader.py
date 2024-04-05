@@ -171,7 +171,7 @@ class ConfigurationLoader:
                 
                 self._sources.append(src)
 
-            elif uri.startswith(HttpSource.scheme) or uri.startswith("https"):
+            elif uri.startswith(HttpSource.scheme) or uri.startswith(HttpSource.secure_scheme):
                 src = HttpSource.parse(uri)
                 
                 if src is None:
