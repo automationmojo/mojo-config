@@ -14,6 +14,7 @@ SEPARATOR = ";"
 
 mime_source_prefixes = [
     "http://",
+    "https://",
     "dir://",
     "mongodb://"
 ]
