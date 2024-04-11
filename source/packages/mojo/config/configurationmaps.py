@@ -133,7 +133,6 @@ def resolve_landscape_configuration(ctx: Context, keyphrase: Optional[str] = Non
     LANDSCAPE_TABLE = OrderedDict()
 
     MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_URIS = []
-    CONFIGURATION_MAPS.LANDSCAPE_CONFIGURATION_MAP = MergeMap()
     
     config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_NAMES
     config_files = MOJO_CONFIG_VARIABLES.MJR_CONFIG_LANDSCAPE_FILES
@@ -173,7 +172,6 @@ def resolve_runtime_configuration(ctx: Context, keyphrase: Optional[str] = None,
     RUNTIME_TABLE = OrderedDict()
 
     MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_URIS = []
-    CONFIGURATION_MAPS.RUNTIME_CONFIGURATION_MAP = MergeMap()
 
     config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_NAMES
     config_files = MOJO_CONFIG_VARIABLES.MJR_CONFIG_RUNTIME_FILES
@@ -213,7 +211,6 @@ def resolve_topology_configuration(ctx: Context, keyphrase: Optional[str] = None
     TOPOLOGY_TABLE = OrderedDict()
 
     MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_URIS = []
-    CONFIGURATION_MAPS.TOPOLOGY_CONFIGURATION_MAP = MergeMap()
 
     config_names = MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_NAMES
     config_files = MOJO_CONFIG_VARIABLES.MJR_CONFIG_TOPOLOGY_FILES
