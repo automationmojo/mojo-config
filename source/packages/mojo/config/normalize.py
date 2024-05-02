@@ -1,10 +1,7 @@
-"""
-.. module:: normalize
-    :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module that contains functions for normalizing configuraiton environment parameters.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
-"""
+__author__ = "Myron Walker"
+__copyright__ = "Copyright 2020, Myron W Walker"
+__credits__ = []
 
 from typing import List
 
