@@ -362,14 +362,14 @@ testing = ["flufl.flake8", "importlib-resources (>=1.3)", "jaraco.test (>=5.4)",
 
 [[package]]
 name = "jinja2"
-version = "3.1.3"
+version = "3.1.4"
 description = "A very fast and expressive template engine."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "Jinja2-3.1.3-py3-none-any.whl", hash = "sha256:7d6d50dd97d52cbc355597bd845fabfbac3f551e1f99619e39a35ce8c370b5fa"},
-    {file = "Jinja2-3.1.3.tar.gz", hash = "sha256:ac8bd6544d4bb2c9792bf3a159e80bba8fda7f07e81bc3aed565432d5925ba90"},
+    {file = "jinja2-3.1.4-py3-none-any.whl", hash = "sha256:bc5dd2abb727a5319567b7a813e6a2e7318c39f4f487cfe6c89c6f9c7d25197d"},
+    {file = "jinja2-3.1.4.tar.gz", hash = "sha256:4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"},
 ]
 
 [package.dependencies]
@@ -507,50 +507,50 @@ files = [
 
 [[package]]
 name = "mojo-collections"
-version = "1.3.8"
+version = "1.3.9"
 description = "Mojo Collections Package"
 category = "main"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "mojo_collections-1.3.8-py3-none-any.whl", hash = "sha256:8f895abed5327b1d1845112490c60da3fbadac7dc19a80aed4a890ab852aa8cd"},
-    {file = "mojo_collections-1.3.8.tar.gz", hash = "sha256:ab1db484aafda15a477bd507754017cdc7a1febacf63442dcab6fce30e5849b4"},
+    {file = "mojo_collections-1.3.9-py3-none-any.whl", hash = "sha256:b1edff6907bfdcee36178558ab6989979af3707c75c135a4e6d2825d74ebf877"},
+    {file = "mojo_collections-1.3.9.tar.gz", hash = "sha256:020c113c28353900bc8f2e7463c40d8eec8c503fea35edb3c93a402de49007a0"},
 ]
 
 [[package]]
 name = "mojo-credentials"
-version = "1.3.13"
+version = "1.3.14"
 description = "Automation Mojo Credentials Package"
 category = "main"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "mojo_credentials-1.3.13-py3-none-any.whl", hash = "sha256:f7c451b135034d07867cf7404c4a34c6dc713f874d306f814d034d0dbce4e5a0"},
-    {file = "mojo_credentials-1.3.13.tar.gz", hash = "sha256:34bee2e81a4605fe432cb1f24baae18ad000c6227ff397deb2604d0e697fe042"},
+    {file = "mojo_credentials-1.3.14-py3-none-any.whl", hash = "sha256:e2cf8dac1de8b4bdce7b0904e0a6f0c62a02867a38b44b8631d56c0f9910bfca"},
+    {file = "mojo_credentials-1.3.14.tar.gz", hash = "sha256:4307ab66b10e646e3d0dcbc80714b23ff5395dec9681160f6140473adbff02c4"},
 ]
 
 [[package]]
 name = "mojo-errors"
-version = "1.3.6"
+version = "1.3.7"
 description = "Automation Mojo Errors Module"
 category = "main"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "mojo_errors-1.3.6-py3-none-any.whl", hash = "sha256:3ac72276ccf054a0b2f828796b37e31c57da7230afd9efa7faeb4e984b1398d9"},
-    {file = "mojo_errors-1.3.6.tar.gz", hash = "sha256:02305ce83870a624da59573aa8b88a86042e2210620a28210e6940c044a34cf0"},
+    {file = "mojo_errors-1.3.7-py3-none-any.whl", hash = "sha256:8fb3d82fda2e7559a4d1ced8986b4ccc234507bac50e1f7b65f0e51c735cffc3"},
+    {file = "mojo_errors-1.3.7.tar.gz", hash = "sha256:da9881548022fcf6534feff0cdadb62c595680098d42a22f0563e9b798665026"},
 ]
 
 [[package]]
 name = "mojo-extension"
-version = "1.3.17"
+version = "1.3.18"
 description = "Automation Mojo Extension Package"
 category = "main"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "mojo_extension-1.3.17-py3-none-any.whl", hash = "sha256:932818a100e481b0a166ff5f12c9ce29465b233f7b2ed26f6e0abf22d6375e73"},
-    {file = "mojo_extension-1.3.17.tar.gz", hash = "sha256:e79961f04cee8419f9a42cf0a26cf037933dd583b74f382dc9963ee2a7a1ff3c"},
+    {file = "mojo_extension-1.3.18-py3-none-any.whl", hash = "sha256:d30c54565c1b3d8f7ff30276bce5dbc578766fccc9ea1541880510c708577951"},
+    {file = "mojo_extension-1.3.18.tar.gz", hash = "sha256:9fc04db47058980e3270cd96b53b6fad18c65f869b124d18b7eec8aa549d14a0"},
 ]
 
 [package.dependencies]
@@ -559,14 +559,14 @@ mojo-startup = ">=1.3.5,<1.4.0"
 
 [[package]]
 name = "mojo-startup"
-version = "1.3.7"
+version = "1.3.8"
 description = "Automation Mojo Startup Package"
 category = "main"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "mojo_startup-1.3.7-py3-none-any.whl", hash = "sha256:16b156785b5f35a2cc0b5b5024a33c195a7b55db5d8d45957cc0e6c708cffcbc"},
-    {file = "mojo_startup-1.3.7.tar.gz", hash = "sha256:42e2ea96e71c74136d85e0084b70bb89dc1f37ac59ebed242d277f01eaf62834"},
+    {file = "mojo_startup-1.3.8-py3-none-any.whl", hash = "sha256:4185aa4c1599f01b73429cf15c5c44d77c81afc27642d5e352d58874f8cfd2b8"},
+    {file = "mojo_startup-1.3.8.tar.gz", hash = "sha256:19e527eb01c5d7f8f743d77b8a40a249b1eb1882001407664c363e43b0c7decb"},
 ]
 
 [[package]]
