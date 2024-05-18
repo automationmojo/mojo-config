@@ -16,7 +16,6 @@ from mojo.config.configurationmaps import CONFIGURATION_MAPS
 
 CREDENTIAL_MANAGER_SINGLETON = None
 
-
 SINGLETON_LOCK = RLock()
 
 

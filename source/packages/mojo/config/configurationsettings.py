@@ -41,6 +41,10 @@ class MOJO_CONFIG_DEFAULTS:
     if "MJR_CONFIG_REQUIRE_TOPOLOGY" in default_config:
         MJR_CONFIG_REQUIRE_TOPOLOGY = default_config["MJR_CONFIG_REQUIRE_TOPOLOGY"]
 
+    MJR_CONFIG_STORAGE_URI = ""
+    if "MJR_CONFIG_STORAGE_URI" in default_config:
+        MJR_CONFIG_STORAGE_URI = default_config["MJR_CONFIG_STORAGE_URI"]
+
     DEFAULT_CONFIGURATION = {
         "version": "1.0.0",
         "logging": {

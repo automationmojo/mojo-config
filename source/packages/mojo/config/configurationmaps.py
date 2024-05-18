@@ -19,7 +19,6 @@ from collections import OrderedDict
 
 from mojo.collections.context import Context
 from mojo.collections.contextpaths import ContextPaths
-from mojo.collections.mergemap import MergeMap
 from mojo.collections.wellknown import ContextSingleton
 
 
