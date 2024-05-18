@@ -1,7 +1,7 @@
 
 
-import json
 import os
+import ssl
 import unittest
 
 
@@ -61,7 +61,8 @@ class TestMongoDBConfigEncryption(unittest.TestCase):
             URI_ENCRYPTED_CONFIG
         ]
 
-        loader = ConfigurationLoader(config_uris, credentials=credentials)
+        # We cannot be sure that test clients on github have updated ssl, so for tests we turn off ssl verification
+        loader = ConfigurationLoader(config_uris, credentials=credentials, verify_certificate=False)
 
         config_uri, config_info = loader.load_configuration_by_name(TEST_MONGODB_DOCUMENT, keyphrase="BlahBlah!!")
 

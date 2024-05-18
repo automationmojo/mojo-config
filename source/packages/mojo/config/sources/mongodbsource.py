@@ -23,11 +23,12 @@ class MongoDBSource(ConfigurationSourceBase):
     scheme = "mongodb"
     parse_exp = re.compile(r"mongodb://(?P<host>[a-zA-Z\.0-9\-]+)/(?P<database>[a-zA-Z\.0-9\-]+)/(?P<collection>[a-zA-Z\.0-9\-]+)")
 
-    def __init__(self, uri: str, host: str, database: str, collection: str):
+    def __init__(self, uri: str, host: str, database: str, collection: str, verify_certificate: bool = True):
         super().__init__(uri)
         self._host = host
         self._database = database
         self._collection = collection
+        self._verify_certificate = verify_certificate
         return
     
     @property
@@ -47,7 +48,7 @@ class MongoDBSource(ConfigurationSourceBase):
         return self._port
 
     @classmethod
-    def parse(cls, uri: str) -> Union[None, "MongoDBSource"]:
+    def parse(cls, uri: str, verify_certificate: bool = True) -> Union[None, "MongoDBSource"]:
 
         rtnobj = None
 
@@ -63,7 +64,7 @@ class MongoDBSource(ConfigurationSourceBase):
             host = matchinfo["host"]
             database = matchinfo["database"]
             collection = matchinfo["collection"]
-            rtnobj = MongoDBSource(uri, host, database, collection)
+            rtnobj = MongoDBSource(uri, host, database, collection, verify_certificate=verify_certificate)
 
         return rtnobj
 
@@ -78,7 +79,7 @@ class MongoDBSource(ConfigurationSourceBase):
 
             import pymongo
 
-            client = pymongo.MongoClient(dburi)
+            client = pymongo.MongoClient(dburi, tlsAllowInvalidCertificates=self._verify_certificate)
 
             try:
                 db = client[self._database]

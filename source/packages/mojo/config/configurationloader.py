@@ -29,9 +29,11 @@ class ConfigurationLoader:
         source classes.
     """
 
-    def __init__(self, source_uris: List[str], credentials: Optional[Dict[str, Tuple[str, str]]] = None):
+    def __init__(self, source_uris: List[str], credentials: Optional[Dict[str, Tuple[str, str]]] = None, verify_certificate: bool = True):
         self._source_uris = [uri.strip() for uri in source_uris]
         self._credentials = credentials
+        self._verify_certificate = verify_certificate
+
         self._sources: List[ConfigurationSourceBase] = []
         self._initialize()
         return
@@ -170,7 +172,7 @@ class ConfigurationLoader:
                 self._sources.append(src)
 
             elif uri.startswith(MongoDBSource.scheme):
-                src = MongoDBSource.parse(uri)
+                src = MongoDBSource.parse(uri, verify_certificate=self._verify_certificate)
                 
                 if src is None:
                     errmsg = f"MongoDBSource encountered an error parsing configuration source uri='{uri}'"
