@@ -3,9 +3,11 @@ __author__ = "Myron Walker"
 __copyright__ = "Copyright 2020, Myron W Walker"
 __credits__ = []
 
-from typing import Dict, Optional, Tuple, Union
+from typing import Dict, Tuple, Union
 
+import logging
 import re
+
 from urllib.parse import quote_plus
 
 from mojo.errors.exceptions import ConfigurationError
@@ -13,6 +15,8 @@ from mojo.config.configurationformat import ConfigurationFormat
 from mojo.config.sources.configurationsourcebase import (
     ConfigurationSourceBase
 )
+
+logger = logging.getLogger()
 
 class MongoDBSource(ConfigurationSourceBase):
 
@@ -87,7 +91,10 @@ class MongoDBSource(ConfigurationSourceBase):
             finally:
                 client.close()
 
-        except:
+        except Exception as xcpt:
+            import traceback
+            errmsg = traceback.format_exc()
+            logger.error(errmsg)
             config_info = None
 
 
