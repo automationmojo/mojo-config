@@ -46,8 +46,7 @@ class TestCouchDBConfigEncryption(unittest.TestCase):
     
     def test_couchdb_config(self):
 
-        if "AUTOMATION_MOJO_COUCHDB_PWD" not in os.environ:
-            return
+        assert "AUTOMATION_MOJO_COUCHDB_PWD" in os.environ, "The 'AUTOMATION_MOJO_COUCHDB_PWD' environment variable must be set for running tests."
 
         couchdbuser = "datauser"
         couchdbpwd = os.environ["AUTOMATION_MOJO_COUCHDB_PWD"].strip()

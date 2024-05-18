@@ -25,7 +25,7 @@ EXTENSION_TO_CONFIG_FORMAT = {
 
 class DirectorySource(ConfigurationSourceBase):
 
-    schema = "dir"
+    scheme = "dir"
     parse_exp = re.compile(r"dir://(?P<directory>[/s/S]+)")
 
     def __init__(self, uri: str, directory: str):

@@ -48,8 +48,7 @@ class TestMongoDBConfigEncryption(unittest.TestCase):
     
     def test_mongodb_config(self):
 
-        if "AUTOMATION_MOJO_COUCHDB_PWD" not in os.environ:
-            return
+        assert "AUTOMATION_MOJO_MONGODB_PWD" in os.environ, "The 'AUTOMATION_MOJO_MONGODB_PWD' environment variable must be set for running tests."
 
         mongodbuser = "datauser"
         mongodbpwd = os.environ["AUTOMATION_MOJO_MONGODB_PWD"].strip()
