@@ -76,12 +76,16 @@ class MongoDBSource(ConfigurationSourceBase):
 
             client = pymongo.MongoClient(dburi)
 
-            db = client[self._database]
+            try:
+                db = client[self._database]
 
-            collection = db[self._collection]
+                collection = db[self._collection]
 
-            config_info = collection.find_one({"_id": config_name})
-            config_format = ConfigurationFormat.JSON
+                config_info = collection.find_one({"_id": config_name})
+                config_format = ConfigurationFormat.JSON
+
+            finally:
+                client.close()
 
         except:
             config_info = None

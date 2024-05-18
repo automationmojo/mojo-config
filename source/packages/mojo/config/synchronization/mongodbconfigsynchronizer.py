@@ -76,11 +76,14 @@ class MongoDbConfigSynchronizer(ConfigSynchronizerBase):
 
         client = pymongo.MongoClient(dburi)
 
-        db = client[self._database]
+        try:
+            db = client[self._database]
 
-        collection = db[venue]
-        
-        collection.insert_one(document_info)
+            collection = db[venue]
+            
+            collection.insert_one(document_info)
+        finally:
+            client.close()
 
         return
     
@@ -98,13 +101,16 @@ class MongoDbConfigSynchronizer(ConfigSynchronizerBase):
 
         client = pymongo.MongoClient(dburi)
 
-        db = client[self._database]
+        try:
+            db = client[self._database]
 
-        collection = db[venue]
+            collection = db[venue]
 
-        document_info = collection.find_one({"_id": config_name})
+            document_info = collection.find_one({"_id": config_name})
 
-        config_format = document_info["format"]
-        config_info = document_info["config"]
+            config_format = document_info["format"]
+            config_info = document_info["config"]
+        finally:
+            client.close()
 
         return config_format, config_info
