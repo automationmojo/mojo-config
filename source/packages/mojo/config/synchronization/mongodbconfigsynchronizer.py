@@ -22,17 +22,18 @@ class MongoDbConfigSynchronizer(ConfigSynchronizerBase):
     scheme = "mongodb"
     parse_exp = re.compile(r"mongodb://(?P<host>[a-zA-Z\.0-9\-]+)/(?P<database>[a-zA-Z\.0-9\-]+)")
 
-    def __init__(self, storage_uri: str, scheme: str, host: str, port: Union[int, None], database: str):
+    def __init__(self, storage_uri: str, scheme: str, host: str, port: Union[int, None], database: str, verify_certificate: bool = True):
         super().__init__(storage_uri)
 
         self._scheme = scheme
         self._host = host
         self._port = port
         self._database = database
+        self._verify_certificate = verify_certificate
         return
 
     @classmethod
-    def parse(cls, uri: str) -> Union[None, "MongoDbConfigSynchronizer"]:
+    def parse(cls, uri: str, verify_certificate: bool = True) -> Union[None, "MongoDbConfigSynchronizer"]:
 
         rtnobj = None
 
@@ -55,7 +56,7 @@ class MongoDbConfigSynchronizer(ConfigSynchronizerBase):
             
             database = matchinfo["database"]
 
-            rtnobj = MongoDbConfigSynchronizer(uri, scheme, host, port, database)
+            rtnobj = MongoDbConfigSynchronizer(uri, scheme, host, port, database, verify_certificate=verify_certificate)
 
         return rtnobj
 
@@ -99,7 +100,7 @@ class MongoDbConfigSynchronizer(ConfigSynchronizerBase):
 
         import pymongo
 
-        client = pymongo.MongoClient(dburi)
+        client = pymongo.MongoClient(dburi, tlsAllowInvalidCertificates=self._verify_certificate)
 
         try:
             db = client[self._database]

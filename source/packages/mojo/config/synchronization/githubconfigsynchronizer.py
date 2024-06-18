@@ -16,8 +16,6 @@ import requests
 
 from http import HTTPStatus
 
-from urllib.parse import quote_plus
-
 from mojo.errors.exceptions import ConfigurationError, PublishError
 
 from mojo.config.synchronization.configsynchronizerbase import ConfigSynchronizerBase
@@ -32,10 +30,9 @@ class GithubConfigSynchronizer(ConfigSynchronizerBase):
     scheme = "github"
     parse_exp = re.compile(r"github://(?P<owner>[a-zA-Z\.0-9\-]+)/(?P<repo>[a-zA-Z\.0-9\-]+)/(?P<leaf>[\S]+)")
 
-    def __init__(self, storage_uri: str, scheme: str, owner: str, repo: str, leaf: str):
+    def __init__(self, storage_uri: str, owner: str, repo: str, leaf: str):
         super().__init__(storage_uri)
 
-        self._scheme = scheme
         self._owner = owner
         self._repo = repo
         self._leaf = leaf
@@ -56,18 +53,17 @@ class GithubConfigSynchronizer(ConfigSynchronizerBase):
 
             matchinfo = mobj.groupdict()
 
-            scheme = matchinfo["scheme"]
             owner = matchinfo["owner"]
             repo = matchinfo["repo"]
             leaf = matchinfo["leaf"]
 
-            rtnobj = GithubConfigSynchronizer(uri, scheme, owner, repo, leaf)
+            rtnobj = GithubConfigSynchronizer(uri, owner, repo, leaf)
 
         return rtnobj
 
     def _publish_configuration(self, venue: str, user: str, config_class: str, config_name: str, config_format: str, config_info: str, credentials: Dict[str, Tuple[str, str]]):
         
-        username, token = credentials[self._host]
+        username, token = credentials[self._owner]
         
         headers = {
             "Accept": "application/vnd.github+json",
@@ -199,20 +195,28 @@ class GithubConfigSynchronizer(ConfigSynchronizerBase):
         config_format = None
         config_info = None
 
-        username, token = credentials[self._host]
+        username, token = credentials[self._owner]
         
         headers = {
             "Accept": "application/vnd.github+json",
             "Authorization": f"Bearer {token}",
-            "X-GitHub-Api-Version": GITHUB_API_VERSION
         }
 
-        ref = "heads/main"
+        publish_path = f"/users/{user}/{venue}/{config_class}/{config_name}.yaml"
+        retrieve_url = f"https://github.com/{self._owner}/{self._repo}/releases/latest/download/{publish_path}"
+        resp: requests.Response = requests.get(retrieve_url, headers=headers)
+        if resp.status_code == HTTPStatus.OK:
+            config_buffer = io.StringIO(resp.content)
+            config_info = yaml.safe_load(config_buffer)
+            config_format = "yaml"
+
+        if config_info is None:
+            publish_path = f"/users/{user}/{venue}/{config_class}/{config_name}.json"
+            retrieve_url = f"https://github.com/{self._owner}/{self._repo}/releases/latest/download/{publish_path}"
+            resp: requests.Response = requests.get(retrieve_url, headers=headers)
+            if resp.status_code == HTTPStatus.OK:
+                config_buffer = io.StringIO(resp.content)
+                config_info = json.load(config_buffer)
+                config_format = "json"
 
         return config_format, config_info
-
-#curl -L \
-#  -H "Accept: application/vnd.github+json" \
-#  -H "Authorization: Bearer <YOUR-TOKEN>" \
-#  -H "X-GitHub-Api-Version: 2022-11-28" \
-#  
