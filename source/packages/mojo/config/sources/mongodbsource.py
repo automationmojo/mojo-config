@@ -6,6 +6,7 @@ __credits__ = []
 from typing import Dict, Tuple, Union
 
 import logging
+import os
 import re
 
 from urllib.parse import quote_plus
@@ -81,6 +82,8 @@ class MongoDBSource(ConfigurationSourceBase):
             import pymongo
 
             cafile = certifi.where()
+            if "SSL_CERT_FILE" not in os.environ:
+                os.environ["SSL_CERT_FILE"] = cafile
 
             client = pymongo.MongoClient(dburi, tlsAllowInvalidCertificates=self._verify_certificate, tlsCAFile=cafile)
 
