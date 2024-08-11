@@ -77,7 +77,10 @@ class MongoDBSource(ConfigurationSourceBase):
             username, password = credentials[self._host]
             dburi = f"mongodb+srv://{username}:{quote_plus(password)}@{self._host}/?retryWrites=true&w=majority"
 
+            import certifi
             import pymongo
+
+            certifi.where()
 
             client = pymongo.MongoClient(dburi, tlsAllowInvalidCertificates=self._verify_certificate)
 
