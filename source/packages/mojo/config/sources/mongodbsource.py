@@ -78,14 +78,9 @@ class MongoDBSource(ConfigurationSourceBase):
             username, password = credentials[self._host]
             dburi = f"mongodb+srv://{username}:{quote_plus(password)}@{self._host}/?retryWrites=true&w=majority"
 
-            import certifi
             import pymongo
 
-            cafile = certifi.where()
-            if "SSL_CERT_FILE" not in os.environ:
-                os.environ["SSL_CERT_FILE"] = cafile
-
-            client = pymongo.MongoClient(dburi, tlsAllowInvalidCertificates=self._verify_certificate, tlsCAFile=cafile)
+            client = pymongo.MongoClient(dburi)
 
             try:
                 db = client[self._database]
