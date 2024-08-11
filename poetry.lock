@@ -571,4 +571,4 @@ mongodb = ["pymongo"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4.0"
-content-hash = "ae615e91db5e16859dd643df05f1efddff485bfcf1b29a39b8cab5089de2d4da"
+content-hash = "8964b22f652730e162dd92c38566f257cf1ab8d87045c5a811cdb73d7d2e8c2d"
