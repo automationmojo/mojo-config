@@ -6,14 +6,12 @@ __credits__ = []
 
 from typing import List
 
-from datetime import datetime
-
 from mojo.collections.contextpaths import ContextPaths
 from mojo.collections.wellknown import ContextSingleton
 
 from mojo.config.normalize import normalize_file_path_list, normalize_source_path_list
 from mojo.config.configurationsettings import MOJO_CONFIG_DEFAULTS
-from mojo.config.variables import MOJO_CONFIG_VARIABLES
+from mojo.config.configurationvariables import MOJO_CONFIG_VARIABLES
 
 
 ctx = ContextSingleton()

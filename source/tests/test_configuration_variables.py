@@ -1,8 +1,5 @@
 
-import os
-
 import unittest
-
 
 from mojo.config.normalize import (
     split_and_normalize_source_list

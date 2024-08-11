@@ -13,9 +13,9 @@ __credits__ = []
 
 import os
 
-from mojo.extension.extensionvariables import (
-    MOJO_EXTENSION_VARIABLES,
-    resolve_extension_variables
+from mojo.startup.presencevariables import (
+    MOJO_PRESENCE_VARIABLES,
+    resolve_presence_variables
 )
 
 from mojo.collections.wellknown import ContextSingleton
@@ -72,7 +72,7 @@ class MOJO_CONFIG_VARNAMES:
     MJR_CONFIG_RUNTIME_FILES = "MJR_CONFIG_RUNTIME_FILES"
 
 
-class MOJO_CONFIG_VARIABLES(MOJO_EXTENSION_VARIABLES):
+class MOJO_CONFIG_VARIABLES(MOJO_PRESENCE_VARIABLES):
 
     MJR_CONFIG_REQUIRE_CREDENTIALS = MOJO_CONFIG_DEFAULTS.MJR_CONFIG_REQUIRE_CREDENTIALS
     MJR_CONFIG_REQUIRE_LANDSCAPE = MOJO_CONFIG_DEFAULTS.MJR_CONFIG_REQUIRE_LANDSCAPE
@@ -86,7 +86,7 @@ class MOJO_CONFIG_VARIABLES(MOJO_EXTENSION_VARIABLES):
     MJR_CONFIG_USE_RUNTIME = False
     MJR_CONFIG_USE_TOPOLOGY = False
 
-    MJR_CONFIG_DIRECTORY = os.path.join(MOJO_EXTENSION_VARIABLES.MJR_HOME_DIRECTORY, "config")
+    MJR_CONFIG_DIRECTORY = os.path.join(MOJO_PRESENCE_VARIABLES.MJR_HOME_DIRECTORY, "config")
 
     MJR_CONFIG_PASS_PHRASE = None
 
@@ -115,7 +115,7 @@ def resolve_configuration_variables():
 
     # We need to resolve extension variables because we are
     # dependent on some of them.
-    resolve_extension_variables()
+    resolve_presence_variables()
 
     environ = os.environ
 

@@ -1,7 +1,6 @@
 
 
 import os
-import ssl
 import unittest
 
 

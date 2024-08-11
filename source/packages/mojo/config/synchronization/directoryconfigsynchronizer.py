@@ -4,7 +4,7 @@ __author__ = "Myron Walker"
 __copyright__ = "Copyright 2020, Myron W Walker"
 __credits__ = []
 
-from typing import List, Tuple, Union
+from typing import Tuple, Union
 
 import json
 import os

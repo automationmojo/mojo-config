@@ -4,8 +4,6 @@ __copyright__ = "Copyright 2023, Myron W Walker"
 __credits__ = []
 
 
-from typing import TYPE_CHECKING
-
 from threading import RLock
 
 from mojo.collections.wellknown import ContextSingleton

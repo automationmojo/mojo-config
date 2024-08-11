@@ -15,13 +15,13 @@ __credits__ = []
 from typing import Optional
 
 from mojo.startup.wellknown import StartupConfigSingleton
-from mojo.extension.extensionsettings import establish_extension_settings
+from mojo.startup.presencesettings import establish_presence_settings
 
 default_config = {}
 
-startup_config = StartupConfigSingleton()
-if "DEFAULT" in startup_config:
-    default_config = startup_config["DEFAULT"]
+config = StartupConfigSingleton()
+if "MOJO-CONFIG" in config:
+    default_config = config["MOJO-CONFIG"]
 
 class MOJO_CONFIG_DEFAULTS:
 
@@ -58,14 +58,14 @@ class MOJO_CONFIG_DEFAULTS:
 
 CONFIG_SETTINGS_ESTABLISHED = False
 
-def establish_config_settings(*, name: Optional[str]=None, home_dir: Optional[str]=None,  default_configuration: Optional[dict]=None):
+def establish_config_settings(*, name: Optional[str]=None, home_dir: Optional[str]=None,  settings_file: Optional[str]=None, extension_modules: Optional[str]=None, default_configuration: Optional[dict]=None, **other):
 
     global CONFIG_SETTINGS_ESTABLISHED
 
     if not CONFIG_SETTINGS_ESTABLISHED:
         CONFIG_SETTINGS_ESTABLISHED = True
 
-        establish_extension_settings(name=name, home_dir=home_dir)
+        establish_presence_settings(name=name, home_dir=home_dir, settings_file=settings_file, extension_modules=extension_modules, **other)
 
         if default_configuration is not None:
             MOJO_CONFIG_DEFAULTS.DEFAULT_CONFIGURATION = default_configuration
