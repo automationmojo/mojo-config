@@ -22,7 +22,7 @@ from mojo.collections.contextpaths import ContextPaths
 from mojo.collections.wellknown import ContextSingleton
 
 
-from mojo.config.variables import (
+from mojo.config.configurationvariables import (
     MOJO_CONFIG_VARNAMES,
     MOJO_CONFIG_VARIABLES,
     CONFIGURATION_MAPS
