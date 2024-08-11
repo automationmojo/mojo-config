@@ -80,9 +80,9 @@ class MongoDBSource(ConfigurationSourceBase):
             import certifi
             import pymongo
 
-            certifi.where()
+            cafile = certifi.where()
 
-            client = pymongo.MongoClient(dburi, tlsAllowInvalidCertificates=self._verify_certificate)
+            client = pymongo.MongoClient(dburi, tlsAllowInvalidCertificates=self._verify_certificate, tlsCAFile=cafile)
 
             try:
                 db = client[self._database]
