@@ -80,7 +80,7 @@ class MongoDBSource(ConfigurationSourceBase):
 
             import pymongo
 
-            client = pymongo.MongoClient(dburi, ssl=True)
+            client = pymongo.MongoClient(dburi, connect=False)
 
             try:
                 db = client[self._database]
